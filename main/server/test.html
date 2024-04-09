@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Form</title>
+</head>
+
+<body>
+    <h2>Upload Form</h2>
+    <form id="uploadForm">
+        <label for="fileInput">Choose a file:</label><br>
+        <input type="file" id="fileInput" name="file"><br>
+        <label for="titleInput">Title:</label><br>
+        <input type="text" id="titleInput" name="title"><br>
+        <label for="contentInput">Content:</label><br>
+        <textarea id="contentInput" name="content"></textarea><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Create FormData object and append form data
+            const formdata = new FormData();
+            formdata.append("file", fileInput.files[0]);
+            formdata.append("title", document.getElementById('titleInput').value);
+            formdata.append("contenu", document.getElementById('contentInput').value);
+
+            // Define request options
+            const requestOptions = {
+                method: "POST",
+                body: formdata
+            };
+
+            // Send fetch request
+            fetch("http://localhost:3000/rooms/addChapitre", requestOptions)
+                .then(response => response.text())
+                .then(result => console.log(result))
+                .catch(error => console.error(error));
+        });
+    </script>
+</body>
+
+</html>
