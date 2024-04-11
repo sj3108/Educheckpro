@@ -6,7 +6,7 @@ from nltk.corpus import stopwords
 import docx
 
 # enter file path
-file_path = "D:/MY OWN PROJECT/classroom/plagarism-internal/Submissions/"
+file_path = "C:/Users/anand/Desktop/BE_PROJECT/Educheckpro/plagarism-internal/Submissions/"
 
 
 # doc file input in python
