@@ -109,6 +109,7 @@ function ExpandCard() {
                 component="img"
                 height="230"
                 image={activeRoom?.cour?.theme || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'}
+                //       image={'https://img.freepik.com/free-photo/book-composition-with-open-book_23-2147690555.jpg?size=626&ext=jpg'}
                 alt="Theme of course"
             />
             <CardActions disableSpacing>
