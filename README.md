@@ -9,5 +9,3 @@
    - run grammar....py file
    - launch html page
    - upload the "essay on ...." file (baki ka abhi dhang se work nhi karra) so use that only
-
-   Heylo there everyone
