@@ -8,12 +8,11 @@ import StartMeeting from './StartMeeting'
 
 function Chapitres({ setCurrentChapId, setValue }) {
   const activeRoom = secureLocalStorage.getItem('activeRoom')
-
   return (
     <Grid container columnSpacing={8} rowSpacing={2}>
       <Grid item xs={12} md={4} >
         <Infos />
-        <StartMeeting/>
+        <StartMeeting />
       </Grid>
       <Grid item xs={12} md={8} >
         {activeRoom.chapitres.length > 0 ?

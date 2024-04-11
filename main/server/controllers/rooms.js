@@ -8,7 +8,7 @@ import path from 'path'
 import createDirectory from "../middleware/createDir.js";
 import Submission from "../models/submission.js";
 import submission from "../models/submission.js";
-import {uploadFile} from '../middleware/checker.js'
+import { uploadFile } from '../middleware/checker.js'
 
 function generate_code_room() {
   var pass = '';
@@ -79,7 +79,7 @@ export const createRoom = async (req, res) => {
   try {
     //generer entier entre 1 et 7 include
     if (isProfesseur) {
-    
+
       let random = Math.floor(Math.random() * 7) + 1
       let cour = new Cour({
         title: title,
@@ -88,14 +88,14 @@ export const createRoom = async (req, res) => {
         theme: `${process.env.SERVER_URL}/uploads/themes/bg${random}.jpg`,
         createdAt: new Date()
       })
-    //  console.log(random)
+      //  console.log(random)
       const createdCour = await cour.save();
       const courId = createdCour._id;
 
       let code_room_genere = generate_code_room()
       while (true) {
         const checkedRoom = await Room.findOne({ code_room: code_room_genere })
-        if (checkedRoom) code_room_genere = generate_code_room() // si une room avec ce code existe genere autre code et verifier encore
+        if (checkedRoom) code_room_genere = generate_code_room() // if a room with this code exists, generate another code and check again
 
         else break; //exit the loop
 
@@ -116,7 +116,7 @@ export const createRoom = async (req, res) => {
 
     }
     else {
-      res.status(403).json({ "message": "vous n'avez pas droit de creer un cour seulement les professeurs" })
+      res.status(403).json({ "message": "you do not have the right to create a course only teachers" })
 
     }
 
@@ -150,11 +150,11 @@ export const RejoindreRoom = async (req, res) => {
         const updatedRoom = await Room.findByIdAndUpdate(room._id, { $push: { "etudiants": { etudiant: userId, chapitresConsultees: [] } } }, { new: true }).populate('cour').populate('professeur').populate('chapitres').populate('etudiants.etudiant').populate('etudiants.chapitresConsultees')
         return res.status(200).json({ updatedRoom, deja_Rejoindre: false, roomExists: true })
       }
-      else return res.status(208).json({ "message": "vous avez deja inscrit dans cette room ", deja_Rejoindre: true, roomExists: true })
+      else return res.status(208).json({ "message": "you have already registered in this room", deja_Rejoindre: true, roomExists: true })
 
     }
     else {
-      return res.status(403).json({ "message": "vous n'avez pas droit de rejoindre un cour seulement les etudiants" })
+      return res.status(403).json({ "message": "you are not allowed to join a class only students" })
 
     }
 
@@ -199,16 +199,16 @@ export const getRoomsBySearch = async (req, res) => {
 
 
 export const addChapitre = async (req, res) => {
-  const { idRoom, title, contenu , totalMark} = req.body;
+  const { idRoom, title, contenu, totalMark } = req.body;
   console.log("AAAAAA", req.file)
 
-  const ext = req.file? path.extname(req.file.originalname) : ''
-  let file = title+ext
+  const ext = req.file ? path.extname(req.file.originalname) : ''
+  let file = title + ext
   console.log(file)
   let room = await Room.findById(idRoom);
   let cour = await Cour.findById(room.cour);
   const roomtitle = cour.title;
-  file= '/uploads/'+roomtitle.toString() + '/'+title+'/'+title+"_"+req.file.originalname
+  file = '/uploads/' + roomtitle.toString() + '/' + title + '/' + title + "_" + req.file.originalname
 
 
   try {
@@ -217,7 +217,7 @@ export const addChapitre = async (req, res) => {
       contenu,
       createdAt: new Date(),
       file,
-      TotalMarks : totalMark
+      TotalMarks: totalMark
     })
     await chapitre.save();
     console.log("wwww")
@@ -239,7 +239,7 @@ export const noticeChapitreConsultee = async (req, res) => {
   try {
 
     const room = await Room.findById(idRoom)
-   // console.log(room)
+    // console.log(room)
     // pas besoin de verifier si userId is profeseur car si le cas room ne change pas
     // here we want user to be able to like once a post
     //findIndex is function of js pas mongobd 
@@ -256,10 +256,10 @@ export const noticeChapitreConsultee = async (req, res) => {
     }
 
     const updatedRoom = await Room.findByIdAndUpdate(idRoom, room, { new: true }).populate('cour').populate('professeur').populate('chapitres').populate('etudiants.etudiant').populate('etudiants.chapitresConsultees');
-    
-    return res.json({updatedRoom});
+
+    return res.json({ updatedRoom });
   } catch (error) {
-    return res.status(400).json( {error} )
+    return res.status(400).json({ error })
   }
 }
 
@@ -268,14 +268,14 @@ export const deleteEtudiants = async (req, res) => {
   const { arrayIds, idRoom } = req.body;
 
   try {
-    
-    for(let i = 0; i < arrayIds.length; i++) {
-         var updatedRoom = await Room.findByIdAndUpdate(idRoom ,{ $pull: {etudiants: { _id: arrayIds[i]  }} },{ new: true } ).populate('cour').populate('professeur').populate('chapitres').populate('etudiants.etudiant').populate('etudiants.chapitresConsultees')
+
+    for (let i = 0; i < arrayIds.length; i++) {
+      var updatedRoom = await Room.findByIdAndUpdate(idRoom, { $pull: { etudiants: { _id: arrayIds[i] } } }, { new: true }).populate('cour').populate('professeur').populate('chapitres').populate('etudiants.etudiant').populate('etudiants.chapitresConsultees')
 
     }
     return res.status(200).json({ updatedRoom })
-    
-    
+
+
 
   } catch (error) {
     return res.status(400).json({ error })
@@ -298,10 +298,10 @@ export const ask_new_codeRoom = async (req, res) => {
       else break; //exit the loop
 
     }
-    const updatedRoom = await Room.findByIdAndUpdate(idRoom , {code_room: code_room_genere} , {new:true}).populate('cour').populate('professeur').populate('chapitres').populate('etudiants.etudiant').populate('etudiants.chapitresConsultees')
+    const updatedRoom = await Room.findByIdAndUpdate(idRoom, { code_room: code_room_genere }, { new: true }).populate('cour').populate('professeur').populate('chapitres').populate('etudiants.etudiant').populate('etudiants.chapitresConsultees')
     return res.status(200).json({ updatedRoom })
-    
-    
+
+
 
   } catch (error) {
     return res.status(400).json({ error })
@@ -311,19 +311,19 @@ export const ask_new_codeRoom = async (req, res) => {
 
 
 export const addComments = async (req, res) => {
-  const { idRoom,idChapitre,content,idUser } = req.body;
-  
+  const { idRoom, idChapitre, content, idUser } = req.body;
+
   try {
     const NotPopulatedcomment = new Comment({
-      chapitre:idChapitre,
+      chapitre: idChapitre,
       content,
-      owner:idUser
+      owner: idUser
     })
     await NotPopulatedcomment.save();
-    await Room.findByIdAndUpdate(idRoom , {$push: {comments: NotPopulatedcomment._id}} , {new:true})//.populate('cour').populate('professeur').populate('chapitres').populate('etudiants.etudiant').populate('etudiants.chapitresConsultees').populate('comments')
+    await Room.findByIdAndUpdate(idRoom, { $push: { comments: NotPopulatedcomment._id } }, { new: true })//.populate('cour').populate('professeur').populate('chapitres').populate('etudiants.etudiant').populate('etudiants.chapitresConsultees').populate('comments')
     const comment = await Comment.findById(NotPopulatedcomment._id).populate('owner')
     return res.status(200).json({ comment })
-   
+
   } catch (error) {
     return res.status(400).json({ error })
   }
@@ -333,12 +333,12 @@ export const addComments = async (req, res) => {
 
 export const getComments = async (req, res) => {
   const { id } = req.params;
-  
+
   try {
-  const comments = await Comment.find({chapitre:id}).populate('owner') ;
-  return res.status(200).json({ comments })
-   
-    
+    const comments = await Comment.find({ chapitre: id }).populate('owner');
+    return res.status(200).json({ comments })
+
+
 
   } catch (error) {
     return res.status(400).json({ error })
@@ -348,12 +348,12 @@ export const getComments = async (req, res) => {
 
 export const deleteComment = async (req, res) => {
   const { id } = req.params;
-  
+
   try {
-  const comment = await Comment.findByIdAndDelete(id);
-  return res.status(200).json({ comment})
-   
-    
+    const comment = await Comment.findByIdAndDelete(id);
+    return res.status(200).json({ comment })
+
+
 
   } catch (error) {
     return res.status(400).json({ error })
@@ -363,11 +363,11 @@ export const deleteComment = async (req, res) => {
 
 export const deleteComments_ByIdChapitre = async (req, res) => {
   const { id } = req.params;
-  
+
   try {
-    const comment = await Comment.deleteMany( { chapitre : id } );
+    const comment = await Comment.deleteMany({ chapitre: id });
     return res.status(200).json({ comment })
-   
+
   } catch (error) {
     return res.status(400).json({ error })
   }
@@ -376,43 +376,43 @@ export const deleteComments_ByIdChapitre = async (req, res) => {
 
 
 // submission
-export const addSubmission = async ( req , res )=>{
-   const { idRoom,idChapitre,idUser , title} = req.body;
-   let file = req.file.originalname
-  console.log("HII",file)
+export const addSubmission = async (req, res) => {
+  const { idRoom, idChapitre, idUser, title } = req.body;
+  let file = req.file.originalname
+  console.log("HII", file)
   let room = await Room.findById(idRoom);
   let cour = await Cour.findById(room.cour);
-  let user= await User.findById(idUser)
+  let user = await User.findById(idUser)
   const roomtitle = cour.title;
   let chapitre = await Chapitre.findById(idChapitre)
-  file= '/uploads/'+roomtitle.toString() + '/'+chapitre.title+'/'+user.firstName+"_"+user.lastName +"_"+file
-  const filePath = 'D://MY OWN PROJECT/classroom/main/server'+file;
+  file = '/uploads/' + roomtitle.toString() + '/' + chapitre.title + '/' + user.firstName + "_" + user.lastName + "_" + file
+  const filePath = 'D://MY OWN PROJECT/classroom/main/server' + file;
   const url2 = 'http://127.0.0.1:5000/upload';
-  let gp=0
-  let gc= 0
+  let gp = 0
+  let gc = 0
   await uploadFile(filePath, url2)
     .then(response => {
-       gp = response.GrammerAndSpellingErrorPercent
-       gc  =response.GrammerAndSpellingErrorCount
-        console.log('File uploaded successfully', response.GrammerAndSpellingErrorCount ,"  ", response.GrammerAndSpellingErrorPercent);
-     })
+      gp = response.GrammerAndSpellingErrorPercent
+      gc = response.GrammerAndSpellingErrorCount
+      console.log('File uploaded successfully', response.GrammerAndSpellingErrorCount, "  ", response.GrammerAndSpellingErrorPercent);
+    })
   //   .catch(error => {
   //       console.error('Error uploading file:', error.response.data);
   // });
   try {
-    console.log("ppppppppppp", gc , " ",gp)
+    console.log("ppppppppppp", gc, " ", gp)
     const SubmissionObj = new Submission({
-      owner:idUser,
-      chapitre:idChapitre,
+      owner: idUser,
+      chapitre: idChapitre,
       file,
       GrammerErrorPercent: gp,
-      GrammerErrorCount : gc
+      GrammerErrorCount: gc
     })
     await SubmissionObj.save();
-    await Room.findByIdAndUpdate(idRoom , {$push: {submissions: SubmissionObj._id}} , {new:true})//.populate('cour').populate('professeur').populate('chapitres').populate('etudiants.etudiant').populate('etudiants.chapitresConsultees').populate('comments')
+    await Room.findByIdAndUpdate(idRoom, { $push: { submissions: SubmissionObj._id } }, { new: true })//.populate('cour').populate('professeur').populate('chapitres').populate('etudiants.etudiant').populate('etudiants.chapitresConsultees').populate('comments')
     const submission = await Submission.findById(SubmissionObj._id).populate('owner')
     return res.status(200).json({ submission })
-   
+
   } catch (error) {
     console.log(error)
     return res.status(400).json({ error })
@@ -420,47 +420,47 @@ export const addSubmission = async ( req , res )=>{
 
 }
 
-export const getSubmission = async(req ,res)=>{
+export const getSubmission = async (req, res) => {
   const { id } = req.params;
-    try {
-    const submissions = await Submission.find({chapitre: id}).populate('owner') 
+  try {
+    const submissions = await Submission.find({ chapitre: id }).populate('owner')
     return res.status(200).json({ submissions })
-    } catch (error) {
-      return res.status(400).json({ error })
-    }
-
-}
- export const getSubmissionById = async(req, res)=>{
-  const {id} = req.params ;
-    
-  try {    
-        const submission = await Submission.findById(id).populate("owner").populate("chapitre")
-      res.setHeader('Content-disposition', 'inline');
-
-      console.log("DDDDDSSSSSS", submission )          
-      res.status(200).json({ submission })
   } catch (error) {
-          res.status(404).json({ "message": error })
-      }
-
+    return res.status(400).json({ error })
+  }
 
 }
+export const getSubmissionById = async (req, res) => {
+  const { id } = req.params;
 
-export const updateSubmissionMark = async (req , res)=>{
-  const {id } = req.params 
-  const { ObtainedMarks }= req.body
-  console.log("OOOOOOOOOOoObtainedMarks", ObtainedMarks)
-    
-  try {    
-        const submission = await Submission.findByIdAndUpdate(id ,{ObtainedMarks},{ new: true} )
-        const submissionRes = await Submission.findById(id).populate("owner").populate("chapitre")
-      res.setHeader('Content-disposition', 'inline');
+  try {
+    const submission = await Submission.findById(id).populate("owner").populate("chapitre")
+    res.setHeader('Content-disposition', 'inline');
 
-      console.log("DDDDDSSSSSS", submissionRes )          
-      res.status(200).json({ submissionRes })
-
-  }catch (error) {
+    console.log("DDDDDSSSSSS", submission)
+    res.status(200).json({ submission })
+  } catch (error) {
     res.status(404).json({ "message": error })
+  }
+
+
 }
+
+export const updateSubmissionMark = async (req, res) => {
+  const { id } = req.params
+  const { ObtainedMarks } = req.body
+  console.log("OOOOOOOOOOoObtainedMarks", ObtainedMarks)
+
+  try {
+    const submission = await Submission.findByIdAndUpdate(id, { ObtainedMarks }, { new: true })
+    const submissionRes = await Submission.findById(id).populate("owner").populate("chapitre")
+    res.setHeader('Content-disposition', 'inline');
+
+    console.log("DDDDDSSSSSS", submissionRes)
+    res.status(200).json({ submissionRes })
+
+  } catch (error) {
+    res.status(404).json({ "message": error })
+  }
 
 }

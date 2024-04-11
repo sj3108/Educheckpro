@@ -88,7 +88,7 @@ function ExpandCard() {
 
     }
 
-    console.log(activeRoom.cour.theme);
+    //console.log(secureLocalStorage);
 
     return (
 
@@ -172,7 +172,7 @@ function ExpandCard() {
 
                     )}
                     <Typography sx={{ fontFamily: 'Nunito' }} variant='h6' color="crimson">description :</Typography>
-                    <Typography paragraph>{activeRoom?.cour.description ? activeRoom?.cour.description : "Pas de  description"}</Typography>
+                    <Typography paragraph>{activeRoom?.cour.description ? activeRoom?.cour.description : "No description"}</Typography>
 
                 </CardContent>
             </Collapse>

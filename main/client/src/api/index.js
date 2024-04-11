@@ -3,11 +3,11 @@ import secureLocalStorage from 'react-secure-storage';
 const API = axios.create({ baseURL: "http://localhost:3000/" })
 
 // intercept requests  before they are handled by then or catch
-API.interceptors.request.use((req)=> {
-    if(secureLocalStorage.getItem('token'))  {
-         req.headers.authorization = `Bearer ${secureLocalStorage.getItem('token')}`
+API.interceptors.request.use((req) => {
+    if (secureLocalStorage.getItem('token')) {
+        req.headers.authorization = `Bearer ${secureLocalStorage.getItem('token')}`
     }
-    return req ;
+    return req;
 })
 
 
@@ -18,17 +18,17 @@ export const createRoom = (formData) => API.post('/rooms/createRoom', formData);
 export const joinRoom = (formData) => API.post('/rooms/rejoindre', formData);
 export const updateCour = (id, updatedCour) => API.patch(`/cours/${id}`, updatedCour);
 export const addChapitre = async (formData) => {
-    if(secureLocalStorage.getItem('token'))  {
-       var token = `Bearer ${secureLocalStorage.getItem('token')}`
-       console.log("I'm here ")
-   }
-  const result = await API.post(`/rooms/addChapitre`, formData ,
-    {
-        headers: {
-            "Content-Type": "multipart/form-data",
-            'Authorization': token
-        }
-    });
+    if (secureLocalStorage.getItem('token')) {
+        var token = `Bearer ${secureLocalStorage.getItem('token')}`
+        console.log("I'm here ")
+    }
+    const result = await API.post(`/rooms/addChapitre`, formData,
+        {
+            headers: {
+                "Content-Type": "multipart/form-data",
+                'Authorization': token
+            }
+        });
 
     // console.log("BBBBB", result)
     return result
@@ -45,7 +45,7 @@ export const askfor_new_codeRoom = (idRoom) => API.patch(`/rooms/askfor_new_code
 export const updateTheme = (data) => API.put(`/cours/updateTheme`, data);
 export const fetchThemes = () => API.get(`/cours/all/themes`);
 
-export const addComment = (data) => API.post(`/rooms/addComment`,data);
+export const addComment = (data) => API.post(`/rooms/addComment`, data);
 export const getComments = (id) => API.get(`/rooms/getComments/${id}`);
 
 export const deleteComment = (id) => API.delete(`/rooms/deleteComment/${id}`);
@@ -56,24 +56,23 @@ export const deleteComments_ByIdChapitre = (id) => API.delete(`/rooms/deleteComm
 export const signIn = (formData) => API.post(`/users/signin`, formData);
 export const signUp = (formData) => API.post(`/users/signup`, formData);
 
-export const addSub = async (formData) =>
-{
-    if(secureLocalStorage.getItem('token'))  {
+export const addSub = async (formData) => {
+    if (secureLocalStorage.getItem('token')) {
         var token = `Bearer ${secureLocalStorage.getItem('token')}`
         console.log("I'm here ")
     }
-    const result = await API.post(`/rooms/addSubmission`, formData ,
-    {
-        headers: {
-            "Content-Type": "multipart/form-data",
-            'Authorization': token
-        }
-    });
+    const result = await API.post(`/rooms/addSubmission`, formData,
+        {
+            headers: {
+                "Content-Type": "multipart/form-data",
+                'Authorization': token
+            }
+        });
 
     // console.log("BBBBB", result)
     return result
-    
-} 
+
+}
 export const getSubmission = async (id) => await API.get(`/rooms/getSubmission/${id}`);
 
 export const fetchSubmissionById = async (id) => await API.get(`/rooms/getSubmissionById/${id}`);
