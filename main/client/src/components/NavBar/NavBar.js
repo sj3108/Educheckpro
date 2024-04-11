@@ -1,7 +1,8 @@
 import { AppBar, Avatar, Box, Button, IconButton, Toolbar, Typography } from '@mui/material';
 import React, { useEffect } from 'react'
 import * as CustomStyles from './styles'
-import logo from '../../images/logo.png'
+import logo from '../../images/project_symbol.png'
+import name from '../../images/project_logo.png'
 import { useLocation, useNavigate } from 'react-router-dom';
 import CustomDrawer from '../DrawerNavigation/CustomDrawer';
 import { useDispatch } from 'react-redux';
@@ -15,7 +16,7 @@ function Navbar() {
   const location = useLocation()
   const user = getUserFromJWT()
   const dispatch = useDispatch()
-  
+
 
   useEffect(() => {
 
@@ -52,7 +53,8 @@ function Navbar() {
           )
         }
         <div style={{ ...CustomStyles.brandContainer }} >
-          <img style={{ objectFit: 'cover', marginLeft: 12,cursor: "pointer" }} src={logo} alt="logo" height="32px" onClick={()=> navigate('/')} />
+          <img style={{ objectFit: 'cover', marginLeft: 12, cursor: "pointer" }} src={logo} alt="logo" height="50px" onClick={() => navigate('/')} />
+          <img style={{ objectFit: 'cover', marginLeft: 12, cursor: "pointer" }} src={name} alt="name" height="44px" onClick={() => navigate('/')} />
 
         </div>
       </div>

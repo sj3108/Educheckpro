@@ -19,10 +19,10 @@ import Swal from 'sweetalert2';
 
 function Copyright(props) {
     return (
-        <Typography variant="body2" color="text.secondary" align="center" {...props} sx={{fontFamily:"Poppins"}}>
+        <Typography variant="body2" color="text.secondary" align="center" {...props} sx={{ fontFamily: "Poppins" }}>
             {'Copyright © '}
-            <Link color="inherit" href="" style={{textDecoration: 'none'}} >
-                Master Class
+            <Link color="inherit" href="" style={{ textDecoration: 'none' }} >
+                Educheck Pro
             </Link>{' '}
             {new Date().getFullYear()}
             {'.'}
@@ -97,7 +97,7 @@ export default function Auth() {
                         <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }} className='gradient-custom-2'>
                             <LockOutlinedIcon />
                         </Avatar>
-                        <Typography component="h1" variant="h5" sx={{fontFamily:"Special Elite"}}>
+                        <Typography component="h1" variant="h5" sx={{ fontFamily: "Special Elite" }}>
                             {isSignUp ? 'Sign Up' : 'Sign In'}
                         </Typography>
                         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
@@ -106,7 +106,7 @@ export default function Auth() {
                                     isSignUp && (
                                         <>
                                             <Grid item xs={12} sm={6}>
-                                                <TextField 
+                                                <TextField
                                                     autoComplete="given-name" name="firstName"
                                                     required={true} fullWidth id="firstName" label="First Name" autoFocus
                                                     onChange={handleChange}
@@ -167,13 +167,13 @@ export default function Auth() {
                                 type="submit"
                                 fullWidth
                                 className='gradient-custom'
-                                sx={{ mt: 2, mb: 2,color:"white" }}
+                                sx={{ mt: 2, mb: 2, color: "white" }}
                             >
                                 {isSignUp ? 'Sign Up' : 'Sign In'}
                             </Button>
                             <Grid container justifyContent="flex-end">
                                 <Grid item>
-                                    <Button variant='outlined' onClick={switchMode} sx={{fontFamily:"Montserrat",mb:2}} >
+                                    <Button variant='outlined' onClick={switchMode} sx={{ fontFamily: "Montserrat", mb: 2 }} >
                                         {isSignUp ? 'Already have An Account? Sign In' : "Don't have An Account? Sign Up"}
                                     </Button>
                                 </Grid>
