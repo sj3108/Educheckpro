@@ -23,12 +23,12 @@ export const deleteChapitre = (formData) => async (dispatch) => {
 
     dispatch({ type: DELETE_CHAPITRE, payload: data.updatedRoom });
     Swal.fire({
-      title: 'Chapitre a ete supprimee',
+      title: 'Chapter has been deleted',
       icon: 'success',
     })
     dispatch({ type: END_LOADING });
   } catch (error) {
-  
+
     console.log(error.message);
   }
 };
@@ -41,7 +41,7 @@ export const updateChapitre = (formData) => async (dispatch) => {
 
     dispatch({ type: UPDATE_CHAPITRE, payload: data.updatedRoom });
     Swal.fire({
-      title: 'Chapitre a ete modifiee',
+      title: 'Chapter has been modified',
       icon: 'success',
     })
 
@@ -51,7 +51,7 @@ export const updateChapitre = (formData) => async (dispatch) => {
   }
 };
 
-export const getSubmissionById=(id)=>async (dispatch) => {
+export const getSubmissionById = (id) => async (dispatch) => {
   try {
     dispatch({ type: START_LOADING });
     const { data } = await api.fetchSubmissionById(id);

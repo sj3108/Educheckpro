@@ -19,37 +19,37 @@ const app = express();
 // const uploadFile = require('./middleware/checker.js');
 dotenv.config();
 
-app.use('/uploads/themes' , express.static(__dirname +'/uploads/themes'));
-app.use(bodyParser.json({limit : "30mb" ,extended : true}))
-app.use(bodyParser.urlencoded({limit : "30mb" ,extended : true}))
+app.use('/uploads/themes', express.static(__dirname + '/uploads/themes'));
+app.use(bodyParser.json({ limit: "30mb", extended: true }))
+app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }))
 
 app.use(cors())
 app.use(morgan('tiny'))
 //====
-app.use('/uploads',express.static('uploads'))
+app.use('/uploads', express.static('uploads'))
 //*************************************** */ 
-app.use('/cours',coursRoutes);
-app.use('/rooms',roomsRoutes);
-app.use('/users',usersRoutes);
+app.use('/cours', coursRoutes);
+app.use('/rooms', roomsRoutes);
+app.use('/users', usersRoutes);
 //*************************************** */
-app.use('/chapitres',chapitresRoutes);
+app.use('/chapitres', chapitresRoutes);
 
 // mongodb connect
 const MONGOOSE_URL = process.env.MONGOOSE_URL
 
-const PORT = process.env.PORT || 5000 ;
+const PORT = process.env.PORT || 5000;
 
 
 
 
 
 mongoose.set("strictQuery", false);
-mongoose.connect(MONGOOSE_URL , {useNewUrlParser : true , useUnifiedTopology : true})
-.then(()=> app.listen(PORT, ()=> console.log(`Server Running from port ${PORT}`)))
-.catch((err)=> console.log(err.message) )
+mongoose.connect(MONGOOSE_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => app.listen(PORT, () => console.log(`Server Running from port ${PORT}`)))
+    .catch((err) => console.log(err.message))
 
 
 
 
 
-// unitil here we make sure that we 're not getting any message warning in console 
+// until here we make sure that we 're not getting any message warning in console 

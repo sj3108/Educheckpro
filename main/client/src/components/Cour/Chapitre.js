@@ -111,8 +111,8 @@ function Chapitre({ chapitre, setCurrentChapId, setValue }) {
                     'aria-labelledby': 'basic-button',
                 }}
             >
-                <MenuItem onClick={handleUpdate}>Modifier</MenuItem>
-                <MenuItem onClick={handleDelete}>Supprimer</MenuItem>
+                <MenuItem onClick={handleUpdate}>To modify</MenuItem>
+                <MenuItem onClick={handleDelete}>DELETE</MenuItem>
             </Menu>
         </Container>
 

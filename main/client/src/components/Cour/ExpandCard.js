@@ -80,13 +80,16 @@ function ExpandCard() {
             dispatch(updateTheme({ theme: currentTheme, idRoom: activeRoom?._id, idCour: activeRoom?.cour._id }))
         }
         else {
-            Swal.fire('choisir un theme !', '', 'error')
+            Swal.fire('choose a theme!', '', 'error')
         }
         handleClose();
         setCurrentTheme(null)
 
 
     }
+
+    console.log(activeRoom.cour.theme);
+
     return (
 
 
@@ -95,7 +98,7 @@ function ExpandCard() {
 
                 avatar={
                     <Avatar sx={{ bgcolor: red[500] }} aria-label="cour">
-                        {activeRoom.cour.title? activeRoom.cour.title.toUpperCase().charAt(0) : '' }
+                        {activeRoom.cour.title ? activeRoom.cour.title.toUpperCase().charAt(0) : ''}
                     </Avatar>
                 }
                 title={activeRoom?.cour?.title}
@@ -126,7 +129,7 @@ function ExpandCard() {
                         </IconButton>
 
                         <Button startIcon={<BorderColorIcon />} variant="outlined" onClick={handleClick} >
-                            Personnaliser
+                            Personalize
                         </Button>
                         <Popover
                             id={id}
@@ -144,8 +147,8 @@ function ExpandCard() {
                         >
                             <ListeImages setCurrentTheme={setCurrentTheme} currentTheme={currentTheme} />
                             <div id="actionPopover" >
-                                <Button variant='contained' color="success" onClick={handlePersonnaliseTheme}>Changer</Button>
-                                <Button variant='contained' color='warning' onClick={handleClose} >Annuler</Button>
+                                <Button variant='contained' color="success" onClick={handlePersonnaliseTheme}>Change</Button>
+                                <Button variant='contained' color='warning' onClick={handleClose} >Cancel</Button>
                             </div>
                         </Popover>
                     </>

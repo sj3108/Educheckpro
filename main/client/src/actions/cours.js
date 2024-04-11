@@ -18,10 +18,10 @@ export const updateTheme = (dataform) => async (dispatch) => {
     dispatch({ type: START_LOADING });
     dispatch({ type: UPDATE_THEME, payload: data.updatedRoom });
     dispatch({ type: END_LOADING });
-    Swal.fire('Theme est modifiee !', '', 'success')
+    Swal.fire('Theme is changed!', '', 'success')
   } catch (error) {
     console.log(error.message);
-    Swal.fire('Une erreur est bloque la modification !', '', 'error')
+    Swal.fire('An error is blocking the modification!', '', 'error')
   }
 };
 
