@@ -1,17 +1,17 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import Divider from '@mui/material/Divider';
+import AutoGraphIcon from '@mui/icons-material/AutoGraph';
+import HomeIcon from '@mui/icons-material/Home';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import { Avatar, Typography } from '@mui/material';
-import * as CustomStyles from './styles'
-import { Link } from 'react-router-dom';
-import HomeIcon from '@mui/icons-material/Home';
+import Box from '@mui/material/Box';
+import Divider from '@mui/material/Divider';
+import Drawer from '@mui/material/Drawer';
 import { deepOrange, deepPurple } from '@mui/material/colors';
-import AutoGraphIcon from '@mui/icons-material/AutoGraph';
+import * as React from 'react';
+import { Link } from 'react-router-dom';
 import secureLocalStorage from "react-secure-storage";
-import './styles.css'
 import { getUserFromJWT } from '../../utils/User';
+import * as CustomStyles from './styles';
+import './styles.css';
 export default function CustomDrawer() {
   const user = getUserFromJWT()
   const activeRoom = secureLocalStorage.getItem('activeRoom')
@@ -41,10 +41,10 @@ export default function CustomDrawer() {
     >
       <Box sx={{ ...CustomStyles.drawerItem, bgcolor: '#f0ece1' }} >
         <Avatar alt='First letter of email' sx={{ bgcolor: deepOrange[500], mr: 1 }}  >{user?.firstName.toUpperCase().charAt(0)}</Avatar>
-        {user?.email}</Box>
+        {user?.firstName}</Box>
         
       <Typography sx={{ ...CustomStyles.drawerItem }} component={Link} to="/">
-        <HomeIcon sx={{ mr: 1, color: "#777a7c" }} fontSize="large" />Cours
+        <HomeIcon sx={{ mr: 1, color: "#777a7c" }} fontSize="large" />Courses
       </Typography>
 
       {/* <Typography sx={{ ...CustomStyles.drawerItem }} component={Link} >
@@ -72,7 +72,7 @@ export default function CustomDrawer() {
             <Box sx={{ ...CustomStyles.drawerItem }} component={Link} to="/">
               <Avatar alt='First letter of email' sx={{ bgcolor: deepPurple[400], mr: 1, fontWeight: 'bold' }}  >!</Avatar>
               {
-                user?.isProfesseur ? 'Creer ou choisir cour' : 'Rejoindre ou choisir cour'
+                user?.isProfesseur ? 'Create or choose yard' : 'Join or choose course'
               }
             </Box>
           )
