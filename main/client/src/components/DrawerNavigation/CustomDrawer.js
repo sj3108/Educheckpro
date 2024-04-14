@@ -42,7 +42,7 @@ export default function CustomDrawer() {
       <Box sx={{ ...CustomStyles.drawerItem, bgcolor: '#f0ece1' }} >
         <Avatar alt='First letter of email' sx={{ bgcolor: deepOrange[500], mr: 1 }}  >{user?.firstName.toUpperCase().charAt(0)}</Avatar>
         {user?.email}</Box>
-        
+
       <Typography sx={{ ...CustomStyles.drawerItem }} component={Link} to="/">
         <HomeIcon sx={{ mr: 1, color: "#777a7c" }} fontSize="large" />Cours
       </Typography>
@@ -56,14 +56,14 @@ export default function CustomDrawer() {
         (activeRoom) ? (
           <>
             <Box sx={{ ...CustomStyles.drawerItem }} component={Link} to="/active_cour">
-              <Avatar alt='First letter of email' sx={{ bgcolor: deepPurple[500], mr: 1 }} className='gradient-custom-3'  >{activeRoom.cour.title? activeRoom.cour.title.toUpperCase().charAt(0) :''}</Avatar>
-              {activeRoom.cour.title? activeRoom.cour.title.toUpperCase().charAt(0) + activeRoom.cour.title.slice(1) : ''}
+              <Avatar alt='First letter of email' sx={{ bgcolor: deepPurple[500], mr: 1 }} className='gradient-custom-3'  >{activeRoom.cour.title ? activeRoom.cour.title.toUpperCase().charAt(0) : ''}</Avatar>
+              {activeRoom.cour.title ? activeRoom.cour.title.toUpperCase().charAt(0) + activeRoom.cour.title.slice(1) : ''}
             </Box>
-           
+
             {
               user?.isProfesseur &&
               <Typography sx={{ ...CustomStyles.drawerItem }} component={Link} to="/statics">
-                <AutoGraphIcon sx={{ mr: 1, color: "#777a7c" }} fontSize="large" />Statistiques
+                <AutoGraphIcon sx={{ mr: 1, color: "#777a7c" }} fontSize="large" />Statistics
               </Typography>
             }
           </>
@@ -72,7 +72,7 @@ export default function CustomDrawer() {
             <Box sx={{ ...CustomStyles.drawerItem }} component={Link} to="/">
               <Avatar alt='First letter of email' sx={{ bgcolor: deepPurple[400], mr: 1, fontWeight: 'bold' }}  >!</Avatar>
               {
-                user?.isProfesseur ? 'Creer ou choisir cour' : 'Rejoindre ou choisir cour'
+                user?.isProfesseur ? 'Create or choose class' : 'Join or choose class'
               }
             </Box>
           )

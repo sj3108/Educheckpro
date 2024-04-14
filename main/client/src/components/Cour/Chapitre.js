@@ -78,7 +78,7 @@ function Chapitre({ chapitre, setCurrentChapId, setValue }) {
 
 
                 <Box>
-                    <Typography sx={{ wordBreak: 'break-word' }}>{activeRoom.professeur.lastName + ' ' + activeRoom.professeur.firstName} a Publish a new course material : {chapitre.title}</Typography>
+                    <Typography sx={{ wordBreak: 'break-word' }}>{activeRoom.professeur.lastName + ' ' + activeRoom.professeur.firstName} posted a new material : {chapitre.title}</Typography>
                     <Typography variant='subtitle2'>{moment(chapitre.createdAt).format('DD MMM YYYY')}</Typography>
                 </Box>
 

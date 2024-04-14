@@ -28,18 +28,17 @@ const columns = [
 
   {
     field: 'chapitres_consultees',
-    headerName: 'Chapitres Consultees',
+    headerName: 'Consulted Chapters',
     type: 'number',
     width: 170,
     align: 'left',
 
   },
   {
-    field: 'view_chapitres_consultees', headerName: 'Voir Les Chapitres Consultees', width: 250, sortable: false,
+    field: 'view_chapitres_consultees', headerName: 'View Consulted Chapters', width: 250, sortable: false,
     renderCell: (params) => {
       return <PopOver dataChapitres={params.row.hiddenData} />;
     }
-
   },
   {
     field: 'hiddenData',
@@ -51,16 +50,16 @@ const columns = [
 function CustomToolbar({ selectedIds, dispatch, activeRoom }) {
   const swalInvite = () => {
     Swal.fire({
-      title: 'Inviter un etudiant',
+      title: 'Invite a student',
       html: `<input type="email" id="email" class="swal2-input" placeholder="Email*">
-      <input type="text" id="code_cour" class="swal2-input" placeholder="Code du cour*" >`, //value=${activeRoom?.code_room}
+      <input type="text" id="code_cour" class="swal2-input" placeholder="Class code*" >`, //value=${activeRoom?.code_room}
       confirmButtonText: 'Send',
       focusConfirm: false,
       preConfirm: () => {
         const email = Swal.getPopup().querySelector('#email').value
         const code_cour = Swal.getPopup().querySelector('#code_cour').value
         if (!email || !code_cour || !(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))) {
-          Swal.showValidationMessage(`Essayer d'entrer un email et code cour valides`)
+          Swal.showValidationMessage(`Try entering a valid email and class code`)
         }
         return { email: email, code_cour: code_cour }
       }
@@ -75,7 +74,7 @@ function CustomToolbar({ selectedIds, dispatch, activeRoom }) {
       emailjs.send(process.env.REACT_APP_EMAIL_SERVICE_ID, process.env.REACT_APP_EMAIL_TEMPLATE_ID, templateParams, process.env.REACT_APP_EMAIL_PUBLIC_KEY)
         .then((response) => {
           Swal.fire({
-            title: "L'email est bien envoye",
+            title: "The email is sent successfully",
             icon: 'success',
             showClass: {
               popup: 'animate__animated animate__fadeInDown'
@@ -86,7 +85,7 @@ function CustomToolbar({ selectedIds, dispatch, activeRoom }) {
           })
         }, (err) => {
           Swal.fire({
-            title: 'Oups ! une erreur  ',
+            title: 'Oops ! a mistake',
             icon: 'error',
             showClass: {
               popup: 'animate__animated animate__fadeInDown'
@@ -106,10 +105,10 @@ function CustomToolbar({ selectedIds, dispatch, activeRoom }) {
 
     // en effet nous supprimons etudiant(s) avec ses chapitres consultes cad champ etudiants du document room
     Swal.fire({
-      title: `Vous voulez vraiment supprimer ${selectedIds.length >= 2 ? 'ces etudiants' : "l'etudiant(e)"}`,
+      title: `You really want to delete ${selectedIds.length >= 2 ? 'these students' : "this student"}`,
       icon: 'warning',
-      confirmButtonText: 'Oui , Continuer!',
-      cancelButtonText: 'Non!',
+      confirmButtonText: 'Yes, continue!',
+      cancelButtonText: 'No!',
       showCancelButton: true,
     }).then((result) => {
       if (result.isConfirmed) {
@@ -127,7 +126,7 @@ function CustomToolbar({ selectedIds, dispatch, activeRoom }) {
   }
   return (
     <Toolbar sx={{ display: 'flex', justifyContent: "space-between" }}>
-      <Typography variant="h5" sx={{ fontFamily: 'Nunito', fontStyle: 'italic' }}> Etudiants</Typography>
+      <Typography variant="h5" sx={{ fontFamily: 'Nunito', fontStyle: 'italic' }}> Students</Typography>
       <div>
 
         {
@@ -147,7 +146,7 @@ function CustomToolbar({ selectedIds, dispatch, activeRoom }) {
             :
             (
               <Button variant="contained" style={{ fontFamily: 'Nunito', fontStyle: 'italic' }}
-                endIcon={<AddIcon />} onClick={swalInvite}  >Inviter
+                endIcon={<AddIcon />} onClick={swalInvite}  >Invite
               </Button>
             )
         }

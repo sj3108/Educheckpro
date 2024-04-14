@@ -111,19 +111,19 @@ function ExpandCard() {
                 height="230"
                 image={activeRoom?.cour?.theme || 'https://img.freepik.com/free-photo/book-composition-with-open-book_23-2147690555.jpg?size=626&ext=jpg'}
                 //       image={}
-                alt="Theme of course"
+                alt="Theme of class"
             />
             <CardActions disableSpacing>
                 {user?.isProfesseur && (
                     <>
                         <IconButton onClick={handleClickVariant('success')} >
-                            <Tooltip title="copier le code du cour" arrow={true} >
+                            <Tooltip title="Copy the class code" arrow={true} >
                                 <ContentCopyTwoToneIcon color='primary' />
                             </Tooltip>
                         </IconButton>
 
                         <IconButton aria-label="reload_code" onClick={generateNewCode}>
-                            <Tooltip title="Request a new course code." arrow={true} >
+                            <Tooltip title="Request a new class code." arrow={true} >
 
                                 <SyncIcon color='primary' />
 
@@ -131,7 +131,7 @@ function ExpandCard() {
                         </IconButton>
 
                         <Button startIcon={<BorderColorIcon />} variant="outlined" onClick={handleClick} >
-                            Personalize
+                            Customise
                         </Button>
                         <Popover
                             id={id}
@@ -170,10 +170,10 @@ function ExpandCard() {
                 <CardContent>
 
                     {user?.isProfesseur && (
-                        <Typography sx={{ fontFamily: 'Nunito' }} variant='h6' color="crimson">code du cour : <span style={{ color: 'black', fontSize: '16px', fontFamily: 'Nunito' }}>{activeRoom?.code_room}</span></Typography>
+                        <Typography sx={{ fontFamily: 'Nunito' }} variant='h6' color="crimson">Class code : <span style={{ color: 'black', fontSize: '16px', fontFamily: 'Nunito' }}>{activeRoom?.code_room}</span></Typography>
 
                     )}
-                    <Typography sx={{ fontFamily: 'Nunito' }} variant='h6' color="crimson">description :</Typography>
+                    <Typography sx={{ fontFamily: 'Nunito' }} variant='h6' color="crimson">Description : </Typography>
                     <Typography paragraph>{activeRoom?.cour.description ? activeRoom?.cour.description : "No description"}</Typography>
 
                 </CardContent>

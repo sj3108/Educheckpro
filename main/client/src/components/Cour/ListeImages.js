@@ -21,7 +21,7 @@ export default function ListeImages({ setCurrentTheme, currentTheme }) {
           <img onClick={(e) => handleChangeId(e, item.image)}
             src={`${item.image}?w=248&fit=crop&auto=format`}
             srcSet={`${item.image}?w=248&fit=crop&auto=format&dpr=2 2x`}
-            alt={`Course theme image${index + 1}`}
+            alt={`Class theme image${index + 1}`}
             loading="lazy"
             style={{ cursor: 'pointer', height: 110, borderRadius: 10 }}
 
