@@ -154,8 +154,8 @@ export default function Auth() {
                                                     name="role"
                                                     onChange={handleChange}
                                                 >
-                                                    <FormControlLabel value="professeur" control={<Radio />} label="Professeur" />
-                                                    <FormControlLabel value="etudiant" control={<Radio />} label="Etudiant" />
+                                                    <FormControlLabel value="professeur" control={<Radio />} label="Professor" />
+                                                    <FormControlLabel value="etudiant" control={<Radio />} label="Student" />
 
                                                 </RadioGroup>
                                             </FormControl>
