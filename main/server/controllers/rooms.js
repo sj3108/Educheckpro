@@ -116,7 +116,7 @@ export const createRoom = async (req, res) => {
 
     }
     else {
-      res.status(403).json({ "message": "you do not have the right to create a course only teachers" })
+      res.status(403).json({ "message": "You do not have the right to create a class, only teachers" })
 
     }
 
@@ -154,7 +154,7 @@ export const RejoindreRoom = async (req, res) => {
 
     }
     else {
-      return res.status(403).json({ "message": "you are not allowed to join a class only students" })
+      return res.status(403).json({ "message": "You are not allowed to join a class, only students" })
 
     }
 

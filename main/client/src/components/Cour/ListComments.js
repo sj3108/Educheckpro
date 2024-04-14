@@ -8,7 +8,7 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import { Box, Divider, ListItem, Typography } from '@mui/material';
 import Comment from './Comment';
 
-export default function ListComments({comments}) {
+export default function ListComments({ comments }) {
   const [open, setOpen] = React.useState(true);
   const handleClick = () => {
     setOpen(!open);
@@ -20,34 +20,34 @@ export default function ListComments({comments}) {
       component="div"
       aria-labelledby="nested-list-subheader"
       subheader={
-        <ListSubheader component="div" id="nested-list-subheader" sx={{display:"flex",justifyContent:"space-between" ,flexDirection:"row",alignItems:"center"}} >
-          <Typography variant='h6' sx={{fontFamily:"Nunito"}}>Less commentes </Typography> 
+        <ListSubheader component="div" id="nested-list-subheader" sx={{ display: "flex", justifyContent: "space-between", flexDirection: "row", alignItems: "center" }} >
+          <Typography variant='h6' sx={{ fontFamily: "Nunito" }}>Less comments</Typography>
           <Box>
-          <ListItemButton onClick={handleClick}>
-          {open ? <ExpandLess /> : <ExpandMore />}
-          </ListItemButton>
+            <ListItemButton onClick={handleClick}>
+              {open ? <ExpandLess /> : <ExpandMore />}
+            </ListItemButton>
           </Box>
         </ListSubheader>
       }
     >
-      <Divider variant="inset"  />
+      <Divider variant="inset" />
 
       <Collapse in={open} timeout="auto" unmountOnExit>
 
-        <List component="div" disablePadding sx={{ maxHeight: 300,overflow: 'auto'}}>
-        { 
-         
-           comments.length > 0 ? (
-            comments.slice().reverse().map((item)=> 
-            <Comment key={item._id} comment={item} />)
-           ) :
-           (
-           <ListItem>
-             Pas commentaires
-           </ListItem>
-           )
+        <List component="div" disablePadding sx={{ maxHeight: 300, overflow: 'auto' }}>
+          {
+
+            comments.length > 0 ? (
+              comments.slice().reverse().map((item) =>
+                <Comment key={item._id} comment={item} />)
+            ) :
+              (
+                <ListItem>
+                  No comments
+                </ListItem>
+              )
           }
-      </List>
+        </List>
       </Collapse>
     </List>
   );

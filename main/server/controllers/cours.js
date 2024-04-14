@@ -29,7 +29,7 @@ export const getCourById = async (req, res) => {
 export const updateCour = async (req, res) => {
     const { id } = req.params;
     //  const post = req.body;
-    if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No course with id: ${id}`);
+    if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No class with id: ${id}`);
     const { title, tags, isProfesseur, theme, description } = req.body;
     try {
 
@@ -39,7 +39,7 @@ export const updateCour = async (req, res) => {
             res.status(200).json({ cour })
         }
         else {
-            res.status(403).json({ "message": "you do not have the right to modify a course only the teachers" })
+            res.status(403).json({ "message": "You do not have the right to modify a class, only the teachers" })
 
         }
 

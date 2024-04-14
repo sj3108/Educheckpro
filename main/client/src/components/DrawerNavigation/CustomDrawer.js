@@ -73,6 +73,7 @@ export default function CustomDrawer() {
               <Avatar alt='First letter of email' sx={{ bgcolor: deepPurple[400], mr: 1, fontWeight: 'bold' }}  >!</Avatar>
               {
                 user?.isProfesseur ? 'Create or choose yard' : 'Join or choose course'
+                user?.isProfesseur ? 'Create or choose class' : 'Join or choose class'
               }
             </Box>
           )

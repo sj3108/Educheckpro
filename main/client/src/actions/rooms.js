@@ -60,8 +60,8 @@ export const joinRoom = (formaData) => async (dispatch) => {
     else {
       Swal.fire({
         icon: 'error',
-        title: 'Oups...',
-        text: 'aucun room trouve avec ce code',
+        title: 'Oops...',
+        text: 'No class found with this code',
 
       })
 
@@ -127,10 +127,10 @@ export const deleteOne_Or_ManyEtudiants = (formaData) => async (dispatch) => {
 
 export const generer_nouveau_codeRoom = (id) => async (dispatch) => {
   try {
-   // dispatch({ type: START_LOADING });
+    // dispatch({ type: START_LOADING });
     const { data } = await api.askfor_new_codeRoom(id);
     dispatch({ type: NEW_CODE, payload: data.updatedRoom });
-  //  dispatch({ type: END_LOADING });
+    //  dispatch({ type: END_LOADING });
 
     const Toast = Swal.mixin({
       toast: true,

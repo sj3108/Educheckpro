@@ -14,7 +14,7 @@ import { getUserFromJWT } from '../../utils/User';
 function Statics() {
 
    const navigate = useNavigate()
-  // const user = JSON.parse(localStorage.getItem('user'))
+   // const user = JSON.parse(localStorage.getItem('user'))
    const user = getUserFromJWT()
    const activeRoom = secureLocalStorage.getItem('activeRoom')
 
@@ -48,14 +48,14 @@ function Statics() {
    }
    return (
       <Container maxWidth='xl'>
-         <Typography variant='h5' sx={{ padding: 2, fontFamily: 'Nunito', fontStyle: 'italic', display: "flex", alignItems: "center" }}>Statistiques <TrendingUpIcon fontSize='large' color="primary" /></Typography>
+         <Typography variant='h5' sx={{ padding: 2, fontFamily: 'Nunito', fontStyle: 'italic', display: "flex", alignItems: "center" }}>Statistics<TrendingUpIcon fontSize='large' color="primary" /></Typography>
          <Grid container spacing={2}    >
             <Grid item xs={12} sm={12} md={6} lg={3}  >
-               <PaperData color="blue" data={NbrEtudiants} title="Nombre Des Etudiants" icon={<Groups2Icon fontSize='large' color='disabled' />} />
+               <PaperData color="blue" data={NbrEtudiants} title="Number of Students" icon={<Groups2Icon fontSize='large' color='disabled' />} />
             </Grid>
 
             <Grid item xs={12} sm={12} md={6} lg={3}>
-               <PaperData color="green" data={NbrChapites} title="Nombre Des Chapitres" icon={<FolderCopyIcon fontSize='large' color='disabled' />} />
+               <PaperData color="green" data={NbrChapites} title="Number of Chapters" icon={<FolderCopyIcon fontSize='large' color='disabled' />} />
             </Grid>
 
             <Grid item xs={12} sm={12} md={6} lg={3}>
