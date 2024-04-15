@@ -44,7 +44,7 @@ export default function CustomDrawer() {
         {user?.firstName}</Box>
 
       <Typography sx={{ ...CustomStyles.drawerItem }} component={Link} to="/">
-        <HomeIcon sx={{ mr: 1, color: "#777a7c" }} fontSize="large" />Courses
+        <HomeIcon sx={{ mr: 1, color: "#777a7c" }} fontSize="large" />Classes
       </Typography>
 
       {/* <Typography sx={{ ...CustomStyles.drawerItem }} component={Link} >

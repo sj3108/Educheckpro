@@ -127,16 +127,17 @@ function DetailChapitre() {
                     <div style={{ borderRadius: '20px', margin: '5px', flex: 1 }} >
                         <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
                             <div>
-                                <Typography sx={{ wordBreak: 'break-word' }} variant="h4" component="h2" fontFamily='Nunito'>{chapitre.title}</Typography>
-                                <Typography variant="body1">{moment(chapitre?.createdAt).fromNow()}</Typography>
+                                <Typography sx={{ wordBreak: 'break-word', padding: '10px 35px 2px 35px' }} variant="h4" component="h2" fontFamily='Nunito'>{chapitre.title}</Typography>
+                                <Typography variant="body1" sx={{ paddingLeft: '39px' }}> {moment(chapitre?.createdAt).fromNow()}</Typography>
                             </div>
-                            <Button variant='contained' sx={{ maxHeight: 40 }} startIcon={<FileDownloadIcon />} onClick={handlePrint}> Generate PDF</Button>
+                            <Button variant='contained' sx={{ maxHeight: 40 }} startIcon={<FileDownloadIcon />} onClick={handlePrint}>Generate PDF</Button>
                         </div>
-                        <Divider style={{ margin: '20px 0' }} />
+                        <Divider style={{ margin: '20px 0', borderBottomWidth: '2px', borderColor: '#908B8B', borderRadius: '10px' }} />
                         <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-
                             <div style={{ wordBreak: 'break-word', padding: 20 }} ref={reportTemplateRef}>{parse(chapitre.contenu)}</div>
-                            <div style={{ wordBreak: 'break-word', padding: 20 }} sx={{ maxHeight: 40 }} ref={reportTemplateRef} variant="h4" >TOTAL MARKS : {chapitre.TotalMarks}</div>
+                            <div style={{ display: "flex", justifyContent: "space-between" }}>
+                                <div style={{ wordBreak: 'break-word', padding: '50px 90px' }} sx={{ maxHeight: 40 }} ref={reportTemplateRef} variant="h4" >TOTAL MARKS : {chapitre.TotalMarks}</div>
+                            </div>
                         </div>
                         {/* this is pdf component */}
                         <PopupDoc uri={fileDetail} />
