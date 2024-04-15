@@ -1,5 +1,89 @@
-hooke = require("hookejs")
-plagiarisedText=`Hi I'm siddhi , I'm working and at diamanti LLp . It is great opportunity for me . Pt. Nehru became the General Secretary of the All India Congress Committee in September 1923. He toured Italy, Switzerland, England, Belgium, Germany and Russia in 1926. In Belgium, he attended the Congress of Oppressed Nationalities in Brussels as an official delegate of the Indian National Congress. He also attended the tenth anniversary celebrations of the October Socialist Revolution in Moscow in 1927. Earlier, in 1926, at the Madras Congress, Nehru had been instrumental in committing the Congress to the goal of Independence. While leading a procession against the Simon commission, he was lathi-charged in Lucknow in 1928. On August 29, 1928 he attended the All-Party Congress and was one of the signatories to the Nehru Report on Indian Constitutional Reform, named after his father Shri Motilal Nehru. The same year, he also founded the ‘Independence for India League’, which advocated complete severance of the British connection with India, and became its General Secretary.`
-// plagiarisedText=`helloooo , I'm siddhi`
-hooke.matchPrint({text: plagiarisedText})
+// hooke = require("hookejs")
+// // plagiarisedText=`helloooo , I'm siddhi`
+// // plagiarisedText =``
+// var resultSourceSite=[]
+// res=async( plagiarisedText)=>{
+//     await hooke.matchPrint({text: plagiarisedText}, resultSourceSite)
+//     // console.log(resultSourceSite)
+//     // Extract scores and clip them between 0 and 100 
+//    let comparedUrlResult = resultSourceSite.map(url => {
+//         let parts = url.split("     SCORE   ");
+//         let score = parseFloat(parts[1]);
+//         return {
+//           url: parts[0].trim(),
+//           score: Math.min(Math.max(score, 0), 100) // Clip score between 0 and 100
+//         };
+//       });
+      
+//       // Sort the array in descending order based on scores
+//       comparedUrlResult.sort((a, b) => b.score - a.score);
+      
+//       // Print the sorted array
+//     //   comparedUrl.forEach(item => {
+//     //     console.log(`${item.url}     SCORE   ${item.score}`);
+//     //   });
+//     // console.log("GGGGGGGGGGGGG", comparedUrlResult)
+//     return comparedUrlResult
 
+// }
+
+
+
+// module.exports = res
+
+
+// ==============================
+const express = require('express')
+const hooke = require('hookejs');
+const cors= require("cors")
+// import cors from 'cors'
+
+const app = express();
+const port = 4000;
+app.use(cors())
+app.use(express.json());
+
+// const res = async (plagiarisedText) => {
+//     var resultSourceSite = [];
+//     await hooke.matchPrint({text: plagiarisedText}, resultSourceSite);
+
+//     let comparedUrlResult = resultSourceSite.map(url => {
+//         let parts = url.split("     SCORE   ");
+//         let score = parseFloat(parts[1]);
+//         return {
+//           url: parts[0].trim(),
+//           score: Math.min(Math.max(score, 0), 100) // Clip score between 0 and 100
+//         };
+//     });
+    
+//     comparedUrlResult.sort((a, b) => b.score - a.score);
+    
+//     return comparedUrlResult;
+// };
+
+app.post('/check-plagiarism', async (req, res) => {
+    try {
+        const plagiarisedText = req.body.text;
+        var resultSourceSite = [];
+         await hooke.matchPrint({text: plagiarisedText}, resultSourceSite);
+         let comparedUrlResult = resultSourceSite.map(url => {
+          let parts = url.split("     SCORE   ");
+          let score = parseFloat(parts[1]);
+          return {
+            url: parts[0].trim(),
+            score: Math.min(Math.max(score, 0), 100) // Clip score between 0 and 100
+          };
+      });
+      comparedUrlResult.sort((a, b) => b.score - a.score);
+      console.log("KKKKKKKKK", comparedUrlResult)
+        // const result = await res(plagiarisedText);
+      res.status(200).json({comparedUrlResult});
+    } catch (error) {
+        console.log("AAAAAAAAAAA",error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+});

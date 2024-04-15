@@ -7,8 +7,10 @@ import User from "../models/user.js";
 import path from 'path'
 import createDirectory from "../middleware/createDir.js";
 import Submission from "../models/submission.js";
-import submission from "../models/submission.js";
-import { uploadFile } from '../middleware/checker.js'
+
+import {uploadFile} from '../middleware/checker.js'
+import { languageModels } from "../middleware/language.js";
+import { url } from "inspector";
 
 function generate_code_room() {
   var pass = '';
@@ -385,39 +387,40 @@ export const addSubmission = async (req, res) => {
   let user = await User.findById(idUser)
   const roomtitle = cour.title;
   let chapitre = await Chapitre.findById(idChapitre)
-  file = '/uploads/' + roomtitle.toString() + '/' + chapitre.title + '/' + user.firstName + "_" + user.lastName + "_" + file
-  const filePath = 'D://MY OWN PROJECT/classroom/main/server' + file;
+  file= '/uploads/'+roomtitle.toString() + '/'+chapitre.title+'/'+user.firstName+"_"+user.lastName +"_"+file
+  const filePath = 'D://MY OWN PROJECT/classroom/main/server'+file;
   const url2 = 'http://127.0.0.1:5000/upload';
-  let gp = 0
-  let gc = 0
+  let gp=0
+  let gc= 0
   await uploadFile(filePath, url2)
     .then(response => {
-      gp = response.GrammerAndSpellingErrorPercent
-      gc = response.GrammerAndSpellingErrorCount
-      console.log('File uploaded successfully', response.GrammerAndSpellingErrorCount, "  ", response.GrammerAndSpellingErrorPercent);
-    })
+       gp = response.GrammerAndSpellingErrorPercent
+       gc  =response.GrammerAndSpellingErrorCount
+        console.log('File uploaded successfully', response.GrammerAndSpellingErrorCount ,"  ", response.GrammerAndSpellingErrorPercent);
+     })
   //   .catch(error => {
   //       console.error('Error uploading file:', error.response.data);
   // });
   try {
-    console.log("ppppppppppp", gc, " ", gp)
+    console.log("ppppppppppp", gc , " ",gp)
     const SubmissionObj = new Submission({
       owner: idUser,
       chapitre: idChapitre,
       file,
       GrammerErrorPercent: gp,
-      GrammerErrorCount: gc
+      GrammerErrorCount : gc
     })
     await SubmissionObj.save();
     await Room.findByIdAndUpdate(idRoom, { $push: { submissions: SubmissionObj._id } }, { new: true })//.populate('cour').populate('professeur').populate('chapitres').populate('etudiants.etudiant').populate('etudiants.chapitresConsultees').populate('comments')
     const submission = await Submission.findById(SubmissionObj._id).populate('owner')
+    languageModels(filePath , SubmissionObj._id)
     return res.status(200).json({ submission })
-
+   
   } catch (error) {
     console.log(error)
     return res.status(400).json({ error })
   }
-
+   
 }
 
 export const getSubmission = async (req, res) => {

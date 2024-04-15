@@ -20,6 +20,8 @@
 	},
 	"homepage": "https://github.com/oekshido/HookeJs#readme",
 	"dependencies": {
+		"cors": "^2.8.5",
+		"express": "^4.19.2",
 		"snowball-stemmers": "^0.6.0"
 	},
 	"devDependencies": {

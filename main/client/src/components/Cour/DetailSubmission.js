@@ -19,6 +19,7 @@ import { addSubmissionToRoom, getRoom } from '../../actions/rooms'
 import ListSubmission from './ListSubmission'
 import DetailChapitre from './DetailChapitre'
 import axios from 'axios'
+import './css/Loader.css'
 function DetailSubmission() {
     const navigate = useNavigate()
     const { id } = useParams()
@@ -31,7 +32,9 @@ function DetailSubmission() {
     
     const user = getUserFromJWT()
     // const { chapitre, isLoading, comments , submissions } = useSelector(state => state.roomReducers)
-    const { chapitre, isLoading } = useSelector(state => state.roomReducers)
+    const { chapitre, isLoading , curr} = useSelector(state => state.roomReducers)
+    console.log("FFFFFFFFFFFFFF",curr)
+    console.log("AAAAAA",currentSubmissions)
     const reportTemplateRef = useRef(null);
     const handlePrint = useReactToPrint({
         content : ()=>reportTemplateRef.current,
@@ -51,7 +54,7 @@ function DetailSubmission() {
     useEffect(() => {
         if (!user) navigate('/auth')
         dispatch(getChapitreById(currentSubmissions.chapitre))
-        // dispatch(getSubmissionById(id))
+        // dispatch(getSubmissionById(currentSubmissions._id))
         // dispatch(fetchComments(id))
         // dispatch(fetchSubmission(id))
         dispatch(getRoom(activeRoom._id))
@@ -189,11 +192,39 @@ if (isLoading) {
             </Paper>
              <Paper elevation={6} style={{ padding: '10px', borderRadius: '15px', overflow: 'hidden' , marginTop:'20px' }}>
                 
-             <Typography variant="body1">GrammerErrorPercent :{currentSubmissions.GrammerErrorPercent}</Typography>
-                                <Typography variant="body1">GrammerErrorCount :{currentSubmissions.GrammerErrorCount}</Typography>
-
+             <div>
+                {currentSubmissions.ExternalPlagrism[0]?.comparedUrlResult.length > 0 ?
+                <>
+                <Typography variant="body1">GrammerErrorPercent :{currentSubmissions.GrammerErrorPercent}</Typography>
+                <Typography variant="body1">GrammerErrorCount :{currentSubmissions.GrammerErrorCount}</Typography>
+                <table className="compared-urls-table">
+                  <thead>
+                    <tr>
+                      <th>URL</th>
+                      <th>Score</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {currentSubmissions.ExternalPlagrism[0].comparedUrlResult.map((item, index) => (
+                      <tr key={index}>
+                        <td>{item.url}</td>
+                        <td>{item.score}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                </>:
+                <>
+                  <div class="loader-container">
+                    <div class="loader"></div>
+                    <div class="loader-text">Loading...</div>
+                  </div>
+                </>
+                 }
+             </div>
              </Paper>
             
+             
              </>
              ):
              (
@@ -207,7 +238,6 @@ if (isLoading) {
                     <Typography  variant="h6" fontFamily='Nunito'>Submission</Typography>
                         <PopupDoc uri={fileDetailSubmission}/>
                     </div>
-                    {/* <div>{currentSubmissions}</div> */}
                 </div>
             </Paper>
               </>
