@@ -26,7 +26,7 @@ const roomReducers = (state = { isLoading: false, rooms: [], activeRoom: null, c
 
     case ACTIVE_ROOM:
       secureLocalStorage.setItem('activeRoom', action?.payload);
-      console.log("XXXXX", action)
+      //console.log("XXXXX", action)
       return {
         ...state, activeRoom: action?.payload
       }
