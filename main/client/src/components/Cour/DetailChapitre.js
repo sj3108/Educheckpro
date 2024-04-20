@@ -15,12 +15,12 @@ import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import { useReactToPrint } from 'react-to-print'
 import { getUserFromJWT } from '../../utils/User'
 import axios from "axios";
-import DocViewer, { DocViewerRenderers } from "@cyntler/react-doc-viewer";
+import FormData from 'form-data';
 
 import PopupDoc from './PopupDoc'
 import { addSubmissionToRoom, getRoom } from '../../actions/rooms'
 import ListSubmission from './ListSubmission'
-import Submission from './Submission'
+
 // import DOCXViewer from './DocxView'
 // import jsPDF from 'jspdf';
 // import html2canvas from 'html2canvas';
@@ -34,6 +34,8 @@ function DetailChapitre() {
     const { chapitre, isLoading, comments, submissions } = useSelector(state => state.roomReducers)
     const reportTemplateRef = useRef(null);
     const [file, setFile] = useState()
+    const [isInternalFlag, setisInternalFlag] = React.useState(false)
+    const [internalPlagRes, setinternalPlagRes ]=useState()
 
 
 
@@ -85,6 +87,32 @@ function DetailChapitre() {
     ];
     // ===
     //  heelo to send assignment
+    
+    const handleInternalPlagarism=async()=>{
+        let data = new FormData();
+        let submissionsPath=`main\\server\\uploads\\`+activeRoom.cour.title+`\\`+chapitre.title
+        console.log("LLLLLLLLLLLLLLL", submissionsPath)
+        data.append('submissionPath', submissionsPath);
+        let config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            url: 'http://127.0.0.1:5000/internalPlagarism',
+            // headers: { 
+            //   ...data.getHeaders()
+            // },
+            data : data
+          };
+          await axios.request(config)
+          .then((response) => {
+            setisInternalFlag(true)
+            setinternalPlagRes(response.data)
+            console.log(response.data);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+
+    }
     const handleSend = async () => {
         let uname = user.firstName + '_' + user.lastName
         dispatch(addSubmissionToRoom({ idRoom: activeRoom._id, idChapitre: chapitre._id, idUser: user._id, title: chapitre.title, isProfesseur: user.isProfesseur, username: uname, file: file }))
@@ -155,6 +183,38 @@ function DetailChapitre() {
                             <h1> TOTAL SUBMISSION {submissions?.length} TOTAL STUDENT {activeRoom.etudiants?.length}</h1>
                         </Box>
                     </Paper>
+                    <Button variant='contained' onClick={handleInternalPlagarism}> Check </Button>
+                    {isInternalFlag ?(
+                        <>
+                        <Paper style={{ padding: '20px', margin: '20px', borderRadius: '15px', overflow: 'hidden', height: "500px" }} elevation={6}>
+                        <h2>Matrix</h2>
+                        <table border="1">
+                         <thead>
+                           <tr>
+                             <th></th> {/* Empty header for the top-left cell */}
+                             {internalPlagRes.studentName.map((name, index) => (
+                               <th key={index}>{name}</th>
+                             ))}
+                           </tr>
+                         </thead>
+                         <tbody>
+                           {internalPlagRes.matrix.map((row, rowIndex) => (
+                             <tr key={rowIndex}>
+                               <td>{internalPlagRes.studentName[rowIndex]}</td> {/* Row name */}
+                               {row.map((cell, cellIndex) => (
+                                 <td key={cellIndex}>{cell}</td>
+                               ))}
+                             </tr>
+                           ))}
+                         </tbody>
+                       </table>
+                                   
+                       </Paper>
+                        </>
+                    ):(<>
+                    </>)
+
+                    }
                 </>
             ) : (
                 <div>
