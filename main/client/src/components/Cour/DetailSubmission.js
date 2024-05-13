@@ -193,10 +193,10 @@ if (isLoading) {
              <Paper elevation={6} style={{ padding: '10px', borderRadius: '15px', overflow: 'hidden' , marginTop:'20px' }}>
                 
              <div>
-                {currentSubmissions.ExternalPlagrism[0]?.comparedUrlResult.length > 0 ?
-                <>
-                <Typography variant="body1">GrammerErrorPercent :{currentSubmissions.GrammerErrorPercent}</Typography>
-                <Typography variant="body1">GrammerErrorCount :{currentSubmissions.GrammerErrorCount}</Typography>
+                {/* {currentSubmissions.ExternalPlagrism[0]?
+                <> */}
+                <Typography variant="body1">GrammerErrorPercent :{currentSubmissions.GrammerErrorPercent? currentSubmissions.GrammerErrorPercent : ""}</Typography>
+                <Typography variant="body1">GrammerErrorCount :{currentSubmissions.GrammerErrorCount? currentSubmissions.GrammerErrorCount : ""}</Typography>
                 <table className="compared-urls-table">
                   <thead>
                     <tr>
@@ -205,7 +205,7 @@ if (isLoading) {
                     </tr>
                   </thead>
                   <tbody>
-                    {currentSubmissions.ExternalPlagrism[0].comparedUrlResult.map((item, index) => (
+                    {currentSubmissions.ExternalPlagrism[0]?.comparedUrlResult.map((item, index) => (
                       <tr key={index}>
                         <td>{item.url}</td>
                         <td>{item.score}</td>
@@ -213,14 +213,14 @@ if (isLoading) {
                     ))}
                   </tbody>
                 </table>
-                </>:
+                {/* </>:
                 <>
                   <div class="loader-container">
                     <div class="loader"></div>
                     <div class="loader-text">Loading...</div>
                   </div>
                 </>
-                 }
+                 } */}
              </div>
              </Paper>
             
