@@ -175,7 +175,10 @@ def moduleApi():
 def internalPlagismApi():
     filePath = request.form.get("submissionPath")
     print("filePathhhhhh", filePath)
-    matrix, docFileName = calculateInternalPlagrismResult(filePath)
+    # filepath has main\server\....
+    matrix, docFileName = calculateInternalPlagrismResult(
+        "D:\\MY OWN PROJECT\\classroom\\" + filePath
+    )
     print("SSSSS", matrix)
     print("GGG", docFileName)
 
