@@ -6,25 +6,25 @@ import { Button } from '@mui/material';
 
 
 function PopupDoc(fileDetail) {
-  const handleClick =()=>{
+  const handleClick = () => {
     // Define dimensions for the popup window
     const width = 1000;
     const height = 1000;
-    const left = (window.innerWidth) ;
+    const left = (window.innerWidth);
     const top = (window.innerHeight);
 
     // Open the PDF file in a popup window
     window.open(fileDetail.uri[0].uri, 'PDF_Popup', `width=${width}, height=${height}, left=${left}, top=${top}`);
   }
-  return(
-  <>
-  <Button onClick={handleClick} >{fileDetail.uri[0].fileName}</Button>
-  {/* <Popup trigger={<button> Trigger</button>} position="right center">
+  return (
+    <>
+      <Button onClick={handleClick} style={{ color: 'white' }} >{fileDetail.uri[0].fileName}</Button>
+      {/* <Popup trigger={<button> Trigger</button>} position="right center">
     <div>
   
     </div>
   </Popup> */}
-  </>
+    </>
   )
 };
 
