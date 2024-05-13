@@ -163,7 +163,7 @@ function DetailChapitre() {
                         <Divider style={{ margin: '20px 0', borderBottomWidth: '2px', borderColor: '#908B8B', borderRadius: '10px' }} />
                         <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
                             <div style={{ wordBreak: 'break-word', padding: 20 }} ref={reportTemplateRef}>{parse(chapitre.contenu)}</div>
-                            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", margin: '10px 35px', padding: '10px 25px', width: '300px' }}>
+                            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", margin: '10px 35px', padding: '10px 25px', width: '500px' }}>
                                 <div style={{ wordBreak: 'break-word' }} ref={reportTemplateRef} variant="h4" >TOTAL MARKS : {chapitre.TotalMarks}</div>
                             </div>
                         </div>
