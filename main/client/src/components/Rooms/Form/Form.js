@@ -62,7 +62,7 @@ function Form({ currentId, setCurrentId }) {
           )
             :
             (
-              <TextField name="code_cour" variant="outlined" label="Code Du Cour" fullWidth value={postData.code_room} onChange={(e) => setPostData({ ...postData, code_room: e.target.value })} margin="dense" required={true} />
+              <TextField name="code_cour" variant="outlined" label="Class Code" fullWidth value={postData.code_room} onChange={(e) => setPostData({ ...postData, code_room: e.target.value })} margin="dense" required={true} />
 
             )
         }

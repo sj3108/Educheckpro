@@ -216,7 +216,6 @@ function DetailChapitre() {
                         </>
                     ) : (<>
                     </>)
-
                     }
                 </>
             ) : (
@@ -233,8 +232,15 @@ function DetailChapitre() {
                         </>
                     ) : (
                         <>
-                            <input type='file' onChange={(e) => setFile(e.target.files[0])} />
-                            <button onClick={handleSend}> SUBMIT </button>
+                            <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', margin: '40px' }}>
+                                <div style={{ marginRight: '20px' }}>
+                                    <input type='file' style={{ display: 'none' }} id='fileInput' onChange={(e) => setFile(e.target.files[0])} />
+                                    <label htmlFor='fileInput' style={{ cursor: 'pointer', backgroundColor: '#4CAF50', color: 'white', padding: '10px 20px', borderRadius: '5px' }}>Choose File</label>
+                                </div>
+                                <div>
+                                    <button onClick={handleSend} style={{ backgroundColor: '#008CBA', color: 'white', padding: '10px 20px', borderRadius: '5px', border: 'none', cursor: 'pointer' }}>Submit</button>
+                                </div>
+                            </div>
                         </>
                     )
                     }
