@@ -25,9 +25,7 @@ function Chapitres({ setCurrentChapId, setValue }) {
               <Typography style={{ fontFamily: 'Nunito' }} variant="h5">Add Assignment</Typography>
             </Box>
           )}
-
       </Grid>
-
     </Grid>
   )
 }

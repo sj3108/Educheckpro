@@ -139,7 +139,6 @@ function DetailChapitre() {
     if (isSubmitted) {
         const uri1 = mySubmission?.file;
         const parts1 = uri1?.split('/')
-
         fileDetail1 = [
             {
                 uri: "http://localhost:3000" + mySubmission.file,

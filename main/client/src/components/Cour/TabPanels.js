@@ -62,8 +62,8 @@ export default function BasicTabs() {
         setAnchorEl(null);
     };
     const handleAddAssignmentRedirect = () => {
-     
-        
+
+
     };
 
     return (
@@ -76,7 +76,7 @@ export default function BasicTabs() {
                             <Tab
                                 icon={<AddRoundedIcon fontSize='large' />}
                                 label="Add Assignment"
-                               aria-controls="add-assignment-menu"
+                                aria-controls="add-assignment-menu"
                                 aria-haspopup="true"
                                 onClick={handleAddAssignmentClick}
                                 sx={{ minWidth: "33%", fontFamily: 'Nunito' }}
@@ -84,7 +84,7 @@ export default function BasicTabs() {
                             <Tab
                                 icon={<AddRoundedIcon fontSize='large' />}
                                 label="Add Notes"
-                               aria-controls="add-assignment-menu"
+                                aria-controls="add-assignment-menu"
                                 aria-haspopup="true"
                                 onClick={handleAddAssignmentClick}
                                 sx={{ minWidth: "33%", fontFamily: 'Nunito' }}
@@ -94,9 +94,9 @@ export default function BasicTabs() {
                     <TabPanel value={value} index={0} >
                         <Chapitres setCurrentChapId={setCurrentChapId} setValue={setValue} />
                     </TabPanel>
-                     <TabPanel value={value} index={1}>
+                    <TabPanel value={value} index={1}>
                         <EditorCour currentChapitre={currentChapitre} currentChapId={currentChapId} setCurrentChapId={setCurrentChapId} activeRoom={activeRoom} />
-                    </TabPanel>  
+                    </TabPanel>
                     <TabPanel value={value} index={2}>
                         <EditorNotes currentChapitre={currentChapitre} currentChapId={currentChapId} setCurrentChapId={setCurrentChapId} activeRoom={activeRoom} />
                     </TabPanel>
