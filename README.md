@@ -1,25 +1,9 @@
-# classroom
-<<<<<<< Updated upstream
 
 1. Plagrism
    - cd Plagarism/src
-   - node tp.js
-2. Plagarism internal - run main.py file
-3. Grammer and spelling checker -
-
-   - run grammar....py file
-   - launch html page
-   - upload the "essay on ...." file (baki ka abhi dhang se work nhi karra) so use that only
+   - nodemon tp.js
+2. pyhton server - python python_server/grammer_and_spelling_checker.py
+3. server -- nodemon main\server\index.js
+4. client -- cd main\client\
+          --  npm start
 =======
- 
-1) Plagrism
-     - cd Plagarism/src
-     - node tp.js
-2) Plagarism internal -  run main.py file
-3) Grammer and spelling checker -
-    - run grammar....py file
-    -  launch html page
-    - upload the "essay on  ...." file (baki ka abhi dhang se work nhi karra) so use that only 
-
-<!-- change langauage.js middleware to get unique matches -->
->>>>>>> Stashed changes
