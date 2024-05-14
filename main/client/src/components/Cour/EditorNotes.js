@@ -60,9 +60,9 @@ function EditorNotes({ currentChapId, setCurrentChapId, currentChapitre, activeR
     else if (htmlContent.length > 0) {
       setError('')
       if (currentChapId === 0) {
-        dispatch(addChapitreToRoom({ idRoom: activeRoom._id, title: titreChap, contenu: htmlContent, isProfesseur: user.isProfesseur, username: uname, totalMark: totalMark, file: file }))
+        dispatch(addChapitreToRoom({ idRoom: activeRoom._id, title: titreChap, contenu: htmlContent, isProfesseur: user.isProfesseur, username: uname, totalMark: null, file: file }))
       }
-      else dispatch(updateChapitre({ idRoom: activeRoom, title: titreChap, contenu: htmlContent, id: currentChapitre._id, isProfesseur: user.isProfesseur, username: uname, totalMark: totalMark, file: file }))
+      else dispatch(updateChapitre({ idRoom: activeRoom, title: titreChap, contenu: htmlContent, id: currentChapitre._id, isProfesseur: user.isProfesseur, username: uname, totalMark: null, file: file }))
     }
   }
 

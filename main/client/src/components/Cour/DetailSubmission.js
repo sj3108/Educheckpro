@@ -134,20 +134,26 @@ function DetailSubmission() {
                     <div style={{ borderRadius: '20px', margin: '5px', flex: 1 }} >
                         <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
                             <div>
-                                <Typography sx={{ wordBreak: 'break-word' }} variant="h4" component="h2" fontFamily='Nunito'>{chapitre.title}</Typography>
-                                <Typography variant="body1">{moment(chapitre?.createdAt).fromNow()}</Typography>
+                                <Typography sx={{ wordBreak: 'break-word', padding: '10px 35px 2px 35px' }} variant="h4" component="h2" fontFamily='Nunito'>{chapitre.title}</Typography>
+                                <Typography variant="body1" sx={{ paddingLeft: '39px' }}>{moment(chapitre?.createdAt).fromNow()}</Typography>
                             </div>
-                            <Button variant='contained' sx={{ maxHeight: 40 }} startIcon={<FileDownloadIcon />} onClick={handlePrint}> Generate PDF</Button>
+                            <Button variant='contained' sx={{ maxHeight: 40, margin: '20px 50px' }} startIcon={<FileDownloadIcon />} onClick={handlePrint}> Generer PDF</Button>
                         </div>
                         <Divider style={{ margin: '20px 0', borderBottomWidth: '2px', borderColor: '#908B8B', borderRadius: '10px' }} />
                         <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
                             <div style={{ wordBreak: 'break-word', padding: 20 }} ref={reportTemplateRef}>{parse(chapitre.contenu)}</div>
-                            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", margin: '10px 35px', padding: '10px 25px', width: '500px' }}>
-                                <div style={{ wordBreak: 'break-word', padding: 20 }} sx={{ maxHeight: 40 }} ref={reportTemplateRef} variant="h4" >TOTAL MARKS : {chapitre.TotalMarks}</div>
-                            </div>
+                            {chapitre.TotalMarks ? (
+                                <>
+                                    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", margin: '10px 35px', padding: '10px 25px', width: '500px' }}>
+                                        <div style={{ wordBreak: 'break-word' }} ref={reportTemplateRef} variant="h4" >TOTAL MARKS : {chapitre.TotalMarks}</div>
+                                    </div>
+                                </>
+                            ) : (<></>)}
                         </div>
                         {/* this is pdf component */}
-                        <PopupDoc uri={fileDetail} />
+                        <Button variant="contained" style={{ backgroundColor: 'rgba(0, 180, 0, 0.8)', color: 'white' }} sx={{ margin: '5px 15px' }}>
+                            <PopupDoc uri={fileDetail} />
+                        </Button>
                         {/* ========== */}
                     </div>
                 </div>
@@ -161,41 +167,60 @@ function DetailSubmission() {
                                 <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
                                     <div>
                                         {/* <Typography sx={{ wordBreak: 'break-word' }} variant="h4" component="h2" fontFamily='Nunito'>{chapitre.title}</Typography> */}
-                                        <Typography sx={{ wordBreak: 'break-word' }} variant="h6" fontFamily='Nunito' >{user.firstName + " " + user.lastName} </Typography>
-                                        <Typography variant="body1">{moment(chapitre?.createdAt).fromNow()}</Typography>
+                                        <Typography sx={{ wordBreak: 'break-word', padding: '10px 35px 2px 20px' }} variant="h6" fontFamily='Nunito' >Student Name : {currentSubmissions.owner.firstName + " " + currentSubmissions.owner.lastName} </Typography>
+                                        <Typography variant="body1" sx={{ paddingLeft: '22px' }}>{moment(chapitre?.createdAt).fromNow()}</Typography>
                                     </div>
-                                    <Button variant='contained' sx={{ maxHeight: 40 }} startIcon={<FileDownloadIcon />} onClick={handlePrint}> Generate PDF</Button>
+                                    <Button variant='contained' sx={{ maxHeight: 40, margin: '20px 50px' }} startIcon={<FileDownloadIcon />} onClick={handlePrint}>Generate PDF</Button>
                                 </div>
                                 <Divider style={{ margin: '20px 0', borderBottomWidth: '2px', borderColor: '#908B8B', borderRadius: '10px' }} />
                                 {/* <div style={{ wordBreak: 'break-word',padding:20 }} variant="h6" fontFamily='Nunito' >{}</div> */}
                                 {/* this is pdf component */}
-                                <PopupDoc uri={fileDetailSubmission} />
+                                <Button variant="contained" style={{ backgroundColor: 'rgba(0, 180, 180, 0.8)', color: 'white' }} sx={{ margin: '20px 20px' }}>
+                                    <PopupDoc uri={fileDetailSubmission} />
+                                </Button>
                             </div>
-
                         </div>
 
                         <div>
                             <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-
-                                <div style={{ wordBreak: 'break-word', padding: 20 }} ref={reportTemplateRef}>
-
-                                    <input type='number' onChange={(e) => setObtainerMarks(e.target.value)} />
-                                    <button onClick={handleSend}> ADD</button>
+                                <div style={{ margin: '20px 30px' }}>
+                                    Obtained Marks:{(marks?.data.ObtainedMarks) ? (marks?.data.ObtainedMarks) : (" Marks not assigned yet")}
                                 </div>
-                                <div>
-                                    ObtainedMarks:{marks?.data.ObtainedMarks}
+                                <div style={{ padding: '20px', textAlign: 'center' }} ref={reportTemplateRef}>
+                                    <input
+                                        type='number'
+                                        onChange={(e) => setObtainerMarks(e.target.value)}
+                                        style={{
+                                            padding: '10px',
+                                            borderRadius: '5px',
+                                            border: '1px solid #ccc',
+                                            marginRight: '10px',
+                                            width: '150px',
+                                            boxSizing: 'border-box'
+                                        }}
+                                    />
+                                    <button
+                                        onClick={handleSend}
+                                        style={{
+                                            padding: '10px 20px',
+                                            borderRadius: '5px',
+                                            backgroundColor: '#007bff',
+                                            color: 'white',
+                                            border: 'none',
+                                            cursor: 'pointer'
+                                        }}>Submit</button>
                                 </div>
-
                             </div>
                         </div>
                     </Paper>
                     <Paper elevation={6} style={{ padding: '10px', borderRadius: '15px', overflow: 'hidden', marginTop: '20px' }}>
-
                         <div>
                             {/* {currentSubmissions.ExternalPlagrism[0]?
                 <> */}
-                            <Typography variant="body1">GrammerErrorPercent :{currentSubmissions.GrammerErrorPercent ? currentSubmissions.GrammerErrorPercent : ""}</Typography>
-                            <Typography variant="body1">GrammerErrorCount :{currentSubmissions.GrammerErrorCount ? currentSubmissions.GrammerErrorCount : ""}</Typography>
+                            <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '1.2rem' }} sx={{ margin: '10px 15px' }}>Evaluation Overview :</Typography>
+                            <Divider style={{ margin: '20px 0', borderBottomWidth: '2px', borderColor: '#908B8B', borderRadius: '10px' }} />
+                            <Typography variant="body1" sx={{ margin: '10px 15px' }}>GrammerErrorPercent :{currentSubmissions.GrammerErrorPercent ? currentSubmissions.GrammerErrorPercent : ""}</Typography>
+                            <Typography variant="body1" sx={{ margin: '10px 15px' }}>GrammerErrorCount :{currentSubmissions.GrammerErrorCount ? currentSubmissions.GrammerErrorCount : ""}</Typography>
                             <table className="compared-urls-table">
                                 <thead>
                                     <tr>

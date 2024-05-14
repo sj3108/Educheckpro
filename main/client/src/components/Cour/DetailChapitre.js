@@ -168,12 +168,16 @@ function DetailChapitre() {
                         <Divider style={{ margin: '20px 0', borderBottomWidth: '2px', borderColor: '#908B8B', borderRadius: '10px' }} />
                         <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
                             <div style={{ wordBreak: 'break-word', padding: 20 }} ref={reportTemplateRef}>{parse(chapitre.contenu)}</div>
-                            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", margin: '10px 35px', padding: '10px 25px', width: '500px' }}>
-                                <div style={{ wordBreak: 'break-word', padding: '50px 90px' }} sx={{ maxHeight: 40 }} ref={reportTemplateRef} variant="h4" >TOTAL MARKS : {chapitre.TotalMarks}</div>
-                            </div>
+                            {chapitre.TotalMarks ? (
+                                <>
+                                    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", margin: '10px 35px', padding: '10px 25px', width: '500px' }}>
+                                        <div style={{ wordBreak: 'break-word' }} ref={reportTemplateRef} variant="h4" >TOTAL MARKS : {chapitre.TotalMarks}</div>
+                                    </div>
+                                </>
+                            ) : (<></>)}
                         </div>
                         {/* this is pdf component */}
-                        <Button variant="contained" style={{ backgroundColor: 'rgba(0, 0, 180, 0.6)', color: 'white' }} sx={{ margin: '5px 15px' }}>
+                        <Button variant="contained" style={{ backgroundColor: 'rgba(0, 180, 0, 0.8)', color: 'white' }} sx={{ margin: '5px 15px' }}>
                             <PopupDoc uri={fileDetail} />
                         </Button>
                         {/* ========== */}
@@ -238,13 +242,13 @@ function DetailChapitre() {
                     ) : (
                         <>
                             <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', margin: '40px' }}>
-                                <div style={{ marginRight: '20px' }}>
-                                    <input type='file' style={{ display: 'none' }} id='fileInput' onChange={handleFileSelect} />
-                                    <label htmlFor='fileInput' style={{ cursor: 'pointer', backgroundColor: '#4CAF50', color: 'white', padding: '10px 20px', borderRadius: '5px' }}>{file ? file.name : 'Choose File'}</label>
-                                </div>
-                                <div>
-                                    <button onClick={handleSend} style={{ backgroundColor: '#008CBA', color: 'white', padding: '10px 20px', borderRadius: '5px', border: 'none', cursor: 'pointer' }}>Submit</button>
-                                </div>
+                                <input type='file' style={{ display: 'none' }} id='fileInput' onChange={handleFileSelect} />
+                                <label htmlFor='fileInput' style={{ fontStyle: 'italic', marginRight: '7px' }}>
+                                    {file ? file.name : ''}
+                                </label>
+                                <button onClick={file ? handleSend : () => document.getElementById('fileInput').click()} style={{ backgroundColor: '#008CBA', color: 'white', padding: '10px 15px', borderRadius: '5px', border: 'none', cursor: 'pointer', fontSize: '16px' }}>
+                                    {file ? 'Submit' : 'Select File'}
+                                </button>
                             </div>
                         </>
                     )
