@@ -18,7 +18,7 @@ function PopupDoc(fileDetail) {
   }
   return (
     <>
-      <Button onClick={handleClick} style={{ color: 'white' }} >{fileDetail.uri[0].fileName}</Button>
+      <Button onClick={handleClick} style={{ color: 'blue' }} >{fileDetail.uri[0].fileName}</Button>
       {/* <Popup trigger={<button> Trigger</button>} position="right center">
     <div>
   

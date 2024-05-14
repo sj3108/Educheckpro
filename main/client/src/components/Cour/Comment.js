@@ -80,7 +80,7 @@ function Comment({ comment }) {
             'aria-labelledby': 'basic-button',
           }}
         >
-          <MenuItem onClick={handleDelete}>Supprimer</MenuItem>
+          <MenuItem onClick={handleDelete}>Delete</MenuItem>
         </Menu>
 
 

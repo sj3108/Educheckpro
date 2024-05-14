@@ -116,8 +116,8 @@ function CustomToolbar({ selectedIds, dispatch, activeRoom }) {
         //appel du deleteByIdEtudiant from apis
         //*********************************** */
         Swal.fire(
-          'Supprimee!',
-          'Terminee',
+          'Deleted!',
+          'Finished',
           'success'
         )
         // console.log(selectedIds);

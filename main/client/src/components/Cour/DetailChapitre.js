@@ -16,6 +16,7 @@ import { useReactToPrint } from 'react-to-print'
 import { getUserFromJWT } from '../../utils/User'
 import axios from "axios";
 import FormData from 'form-data';
+import Tooltip from '@mui/material/Tooltip';
 
 import PopupDoc from './PopupDoc'
 import { addSubmissionToRoom, getRoom } from '../../actions/rooms'
@@ -121,9 +122,8 @@ function DetailChapitre() {
     const handleSend = async () => {
         let uname = user.firstName + '_' + user.lastName
         dispatch(addSubmissionToRoom({ idRoom: activeRoom._id, idChapitre: chapitre._id, idUser: user._id, title: chapitre.title, isProfesseur: user.isProfesseur, username: uname, file: file }))
-        // Reload the current window
-
-
+        window.location.reload(); // Reload the current window
+        window.location.reload(); // Reload the current window
         const currentSubmissions = secureLocalStorage.getItem('CurrentSubmission')
         navigate(`/active_cour/chaptire/submission/${currentSubmissions._id}`)
     }
@@ -188,39 +188,48 @@ function DetailChapitre() {
             {user.isProfesseur ? (
                 <>
                     {/* New section visible to teacher only */}
-                    <Paper style={{ padding: '20px', margin: '20px', borderRadius: '15px', overflow: 'hidden', height: "500px" }} elevation={6}>
+                    <Paper style={{ padding: '20px', margin: '20px', borderRadius: '15px', overflow: 'hidden', height: "500px", position: 'relative' }} elevation={6}>
                         <Box sx={{ ...CustomStyles.commentBox }}>
                             <ListSubmission submissions={submissions} />
-                            <h1> TOTAL SUBMISSION {submissions?.length} TOTAL STUDENT {activeRoom.etudiants?.length}</h1>
+                            <div style={{ textAlign: 'center' }}>
+                                <h1> TOTAL SUBMISSION : {submissions?.length}</h1>
+                                <h1>TOTAL STUDENT : {activeRoom.etudiants?.length}</h1>
+                            </div>
                         </Box>
+                        <div style={{ position: 'absolute', bottom: '20px', right: '20px' }}>
+                            {submissions?.length > 1 && (
+                                <Tooltip title="Check for Plagiarism Among Students">
+                                    <Button variant='contained' onClick={handleInternalPlagarism} sx={{ margin: '20px 100px' }}>Evaluate</Button>
+                                </Tooltip>
+                            )}
+                        </div>
                     </Paper>
-                    <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                        <Button variant='contained' onClick={handleInternalPlagarism} sx={{ margin: '20px 100px' }}>Check</Button>
-                    </div>
                     {isInternalFlag ? (
                         <>
-                            <Paper style={{ padding: '20px', margin: '20px', borderRadius: '15px', overflow: 'hidden', height: "500px" }} elevation={6}>
-                                <h2>Matrix</h2>
-                                <table border="1">
-                                    <thead>
-                                        <tr>
-                                            <th></th> {/* Empty header for the top-left cell */}
-                                            {internalPlagRes.studentName.map((name, index) => (
-                                                <th key={index}>{name}</th>
-                                            ))}
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {internalPlagRes.matrix.map((row, rowIndex) => (
-                                            <tr key={rowIndex}>
-                                                <td>{internalPlagRes.studentName[rowIndex]}</td> {/* Row name */}
-                                                {row.map((cell, cellIndex) => (
-                                                    <td key={cellIndex}>{cell}</td>
+                            <Paper style={{ padding: '20px', margin: '20px', borderRadius: '15px', overflow: 'hidden', minHeight: '500px' }} elevation={6}>
+                                <h2 style={{ marginLeft: '20px' }}>Classroom Plagiarism Analysis :</h2>
+                                <div style={{ overflowX: 'auto' }}>
+                                    <table style={{ width: '100%', tableLayout: 'fixed' }} border="1">
+                                        <thead>
+                                            <tr>
+                                                <th></th> {/* Empty header for the top-left cell */}
+                                                {internalPlagRes.studentName.map((name, index) => (
+                                                    <th key={index}>{name}</th>
                                                 ))}
                                             </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                            {internalPlagRes.matrix.map((row, rowIndex) => (
+                                                <tr key={rowIndex}>
+                                                    <td style={{ textAlign: 'center' }}>{internalPlagRes.studentName[rowIndex]}</td> {/* Row name */}
+                                                    {row.map((cell, cellIndex) => (
+                                                        <td style={{ textAlign: 'center' }} key={cellIndex}>{cell}</td>
+                                                    ))}
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
                             </Paper>
                         </>
                     ) : (<>
@@ -231,13 +240,17 @@ function DetailChapitre() {
                 <div>
                     {isSubmitted ? (
                         <>
-                            <Paper elevation={6} style={{ padding: '10px', borderRadius: '15px', overflow: 'hidden', marginTop: "20px" }}>
-                                <Typography variant="h8" fontFamily='Nunito'>Submission</Typography>
-                                <PopupDoc uri={fileDetail1} />
-                                <p>GrammerErrorCount:{mySubmission.GrammerErrorCount ? mySubmission.GrammerErrorCount : ''}</p>
-                                <p>GrammerErrorPercent:{mySubmission.GrammerErrorPercent ? mySubmission.GrammerErrorPercent : ''}</p>
-                                <p>ObtainedMarks:{mySubmission.ObtainedMarks ? mySubmission.ObtainedMarks : ''}</p>
+                            <Paper elevation={6} style={{ padding: '10px', borderRadius: '15px', overflow: 'hidden', marginTop: "20px", position: 'relative' }}>
+                                <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '1.2rem', margin: '10px 15px' }}>Evaluation Report :</Typography>
+                                <div style={{ position: 'absolute', top: '20px', right: '30px' }}>
+                                    <PopupDoc uri={fileDetail1} />
+                                </div>
+                                <Divider style={{ margin: '20px 0', borderBottomWidth: '2px', borderColor: '#908B8B', borderRadius: '10px' }} />
+                                <Typography variant="body1" sx={{ margin: '10px 15px' }}>GrammerErrorPercent : {mySubmission.GrammerErrorPercent ? mySubmission.GrammerErrorPercent : ""}</Typography>
+                                <Typography variant="body1" sx={{ margin: '10px 15px' }}>GrammerErrorCount : {mySubmission.GrammerErrorCount ? mySubmission.GrammerErrorCount : ""}</Typography>
+                                <Typography variant="body1" sx={{ margin: '10px 15px' }}>Obtained Marks : {mySubmission.ObtainedMarks ? mySubmission.ObtainedMarks : 'Marks Not Assigned Yet'}</Typography>
                             </Paper>
+
                         </>
                     ) : (
                         <>
@@ -254,7 +267,8 @@ function DetailChapitre() {
                     )
                     }
                 </div>
-            )}
+            )
+            }
             {/* comment section */}
             <Box sx={{ ...CustomStyles.commentBox }}>
                 <SendCommentBox user={user} idChapitre={id} activeRoom={activeRoom} />
