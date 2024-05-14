@@ -45,6 +45,11 @@ function DetailChapitre() {
     });
     // console.log("HHHHHHHH ", submissions.length)
 
+    const handleFileSelect = (e) => {
+        const selectedFile = e.target.files[0];
+        setFile(selectedFile);
+    };
+
 
     useEffect(() => {
         if (!user) navigate('/auth')
@@ -128,7 +133,7 @@ function DetailChapitre() {
 
     if (submissions?.length > 0) {
         for (let i = 0; i < submissions.length; i++) {
-            if (submissions[i].owner._id == user._id) {
+            if (submissions[i].owner._id === user._id) {
                 isSubmitted = true
                 mySubmission = submissions[i]
             }
@@ -233,8 +238,8 @@ function DetailChapitre() {
                         <>
                             <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', margin: '40px' }}>
                                 <div style={{ marginRight: '20px' }}>
-                                    <input type='file' style={{ display: 'none' }} id='fileInput' onChange={(e) => setFile(e.target.files[0])} />
-                                    <label htmlFor='fileInput' style={{ cursor: 'pointer', backgroundColor: '#4CAF50', color: 'white', padding: '10px 20px', borderRadius: '5px' }}>Choose File</label>
+                                    <input type='file' style={{ display: 'none' }} id='fileInput' onChange={handleFileSelect} />
+                                    <label htmlFor='fileInput' style={{ cursor: 'pointer', backgroundColor: '#4CAF50', color: 'white', padding: '10px 20px', borderRadius: '5px' }}>{file ? file.name : 'Choose File'} </label>
                                 </div>
                                 <div>
                                     <button onClick={handleSend} style={{ backgroundColor: '#008CBA', color: 'white', padding: '10px 20px', borderRadius: '5px', border: 'none', cursor: 'pointer' }}>Submit</button>

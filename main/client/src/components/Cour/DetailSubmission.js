@@ -223,8 +223,6 @@ function DetailSubmission() {
                  } */}
                         </div>
                     </Paper>
-
-
                 </>
             ) :
                 (
