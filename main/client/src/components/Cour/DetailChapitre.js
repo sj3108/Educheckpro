@@ -35,7 +35,7 @@ function DetailChapitre() {
     const reportTemplateRef = useRef(null);
     const [file, setFile] = useState()
     const [isInternalFlag, setisInternalFlag] = React.useState(false)
-    const [internalPlagRes, setinternalPlagRes ]=useState()
+    const [internalPlagRes, setinternalPlagRes] = useState()
 
 
 
@@ -44,6 +44,11 @@ function DetailChapitre() {
         documentTitle: `${chapitre?.title}` || "document",
     });
     // console.log("HHHHHHHH ", submissions.length)
+
+    const handleFileSelect = (e) => {
+        const selectedFile = e.target.files[0];
+        setFile(selectedFile);
+    };
 
 
     useEffect(() => {
@@ -87,10 +92,10 @@ function DetailChapitre() {
     ];
     // ===
     //  heelo to send assignment
-    
-    const handleInternalPlagarism=async()=>{
+
+    const handleInternalPlagarism = async () => {
         let data = new FormData();
-        let submissionsPath=`main\\server\\uploads\\`+activeRoom.cour.title+`\\`+chapitre.title
+        let submissionsPath = `main\\server\\uploads\\` + activeRoom.cour.title + `\\` + chapitre.title
         console.log("LLLLLLLLLLLLLLL", submissionsPath)
         data.append('submissionPath', submissionsPath);
         let config = {
@@ -100,17 +105,17 @@ function DetailChapitre() {
             // headers: { 
             //   ...data.getHeaders()
             // },
-            data : data
-          };
-          await axios.request(config)
-          .then((response) => {
-            setisInternalFlag(true)
-            setinternalPlagRes(response.data)
-            console.log(response.data);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+            data: data
+        };
+        await axios.request(config)
+            .then((response) => {
+                setisInternalFlag(true)
+                setinternalPlagRes(response.data)
+                console.log(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
 
     }
     const handleSend = async () => {
@@ -128,7 +133,7 @@ function DetailChapitre() {
 
     if (submissions?.length > 0) {
         for (let i = 0; i < submissions.length; i++) {
-            if (submissions[i].owner._id == user._id) {
+            if (submissions[i].owner._id === user._id) {
                 isSubmitted = true
                 mySubmission = submissions[i]
             }
@@ -158,17 +163,19 @@ function DetailChapitre() {
                                 <Typography sx={{ wordBreak: 'break-word', padding: '10px 35px 2px 35px' }} variant="h4" component="h2" fontFamily='Nunito'>{chapitre.title}</Typography>
                                 <Typography variant="body1" sx={{ paddingLeft: '39px' }}> {moment(chapitre?.createdAt).fromNow()}</Typography>
                             </div>
-                            <Button variant='contained' sx={{ maxHeight: 40 }} startIcon={<FileDownloadIcon />} onClick={handlePrint}>Generate PDF</Button>
+                            <Button variant='contained' sx={{ maxHeight: 40, margin: '20px 50px' }} startIcon={<FileDownloadIcon />} onClick={handlePrint}>Generate PDF</Button>
                         </div>
                         <Divider style={{ margin: '20px 0', borderBottomWidth: '2px', borderColor: '#908B8B', borderRadius: '10px' }} />
                         <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
                             <div style={{ wordBreak: 'break-word', padding: 20 }} ref={reportTemplateRef}>{parse(chapitre.contenu)}</div>
-                            <div style={{ display: "flex", justifyContent: "space-between" }}>
+                            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", margin: '10px 35px', padding: '10px 25px', width: '500px' }}>
                                 <div style={{ wordBreak: 'break-word', padding: '50px 90px' }} sx={{ maxHeight: 40 }} ref={reportTemplateRef} variant="h4" >TOTAL MARKS : {chapitre.TotalMarks}</div>
                             </div>
                         </div>
                         {/* this is pdf component */}
-                        <PopupDoc uri={fileDetail} />
+                        <Button variant="contained" style={{ backgroundColor: 'rgba(0, 0, 180, 0.6)', color: 'white' }} sx={{ margin: '5px 15px' }}>
+                            <PopupDoc uri={fileDetail} />
+                        </Button>
                         {/* ========== */}
                     </div>
                 </div>
@@ -183,37 +190,37 @@ function DetailChapitre() {
                             <h1> TOTAL SUBMISSION {submissions?.length} TOTAL STUDENT {activeRoom.etudiants?.length}</h1>
                         </Box>
                     </Paper>
-                    <Button variant='contained' onClick={handleInternalPlagarism}> Check </Button>
-                    {isInternalFlag ?(
+                    <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                        <Button variant='contained' onClick={handleInternalPlagarism} sx={{ margin: '20px 100px' }}>Check</Button>
+                    </div>
+                    {isInternalFlag ? (
                         <>
-                        <Paper style={{ padding: '20px', margin: '20px', borderRadius: '15px', overflow: 'hidden', height: "500px" }} elevation={6}>
-                        <h2>Matrix</h2>
-                        <table border="1">
-                         <thead>
-                           <tr>
-                             <th></th> {/* Empty header for the top-left cell */}
-                             {internalPlagRes.studentName.map((name, index) => (
-                               <th key={index}>{name}</th>
-                             ))}
-                           </tr>
-                         </thead>
-                         <tbody>
-                           {internalPlagRes.matrix.map((row, rowIndex) => (
-                             <tr key={rowIndex}>
-                               <td>{internalPlagRes.studentName[rowIndex]}</td> {/* Row name */}
-                               {row.map((cell, cellIndex) => (
-                                 <td key={cellIndex}>{cell}</td>
-                               ))}
-                             </tr>
-                           ))}
-                         </tbody>
-                       </table>
-                                   
-                       </Paper>
+                            <Paper style={{ padding: '20px', margin: '20px', borderRadius: '15px', overflow: 'hidden', height: "500px" }} elevation={6}>
+                                <h2>Matrix</h2>
+                                <table border="1">
+                                    <thead>
+                                        <tr>
+                                            <th></th> {/* Empty header for the top-left cell */}
+                                            {internalPlagRes.studentName.map((name, index) => (
+                                                <th key={index}>{name}</th>
+                                            ))}
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {internalPlagRes.matrix.map((row, rowIndex) => (
+                                            <tr key={rowIndex}>
+                                                <td>{internalPlagRes.studentName[rowIndex]}</td> {/* Row name */}
+                                                {row.map((cell, cellIndex) => (
+                                                    <td key={cellIndex}>{cell}</td>
+                                                ))}
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </Paper>
                         </>
-                    ):(<>
+                    ) : (<>
                     </>)
-
                     }
                 </>
             ) : (
@@ -230,8 +237,15 @@ function DetailChapitre() {
                         </>
                     ) : (
                         <>
-                            <input type='file' onChange={(e) => setFile(e.target.files[0])} />
-                            <button onClick={handleSend}> SUBMIT </button>
+                            <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', margin: '40px' }}>
+                                <div style={{ marginRight: '20px' }}>
+                                    <input type='file' style={{ display: 'none' }} id='fileInput' onChange={handleFileSelect} />
+                                    <label htmlFor='fileInput' style={{ cursor: 'pointer', backgroundColor: '#4CAF50', color: 'white', padding: '10px 20px', borderRadius: '5px' }}>{file ? file.name : 'Choose File'}</label>
+                                </div>
+                                <div>
+                                    <button onClick={handleSend} style={{ backgroundColor: '#008CBA', color: 'white', padding: '10px 20px', borderRadius: '5px', border: 'none', cursor: 'pointer' }}>Submit</button>
+                                </div>
+                            </div>
                         </>
                     )
                     }

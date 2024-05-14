@@ -38,9 +38,9 @@ function EditorCour({ currentChapId, setCurrentChapId, currentChapitre, activeRo
   const [htmlContent, setHtmlContent] = useState('')
 
   const [titreChap, setTitreChap] = useState('')
-  const [totalMark , setTotalMark]= useState('')
+  const [totalMark, setTotalMark] = useState('')
   const [error, setError] = useState('')
-  const [file, setFile]= useState()
+  const [file, setFile] = useState()
   const dispatch = useDispatch()
   const user = getUserFromJWT()
 
@@ -49,17 +49,22 @@ function EditorCour({ currentChapId, setCurrentChapId, currentChapitre, activeRo
     //   console.log("no file selected")
     //   return
     // }
-    let uname= user.firstName +'_'+user.lastName
+    let uname = user.firstName + '_' + user.lastName
     if (titreChap.trim().length < 1) setError('The title must not be empty.')
     else if (htmlContent.length > 0) {
-  setError('')
-  if (currentChapId === 0)
-  { 
-    dispatch(addChapitreToRoom({ idRoom: activeRoom._id, title: titreChap, contenu: htmlContent , isProfesseur: user.isProfesseur , username: uname , totalMark: totalMark ,  file: file  }))
+      setError('')
+      if (currentChapId === 0) {
+        dispatch(addChapitreToRoom({ idRoom: activeRoom._id, title: titreChap, contenu: htmlContent, isProfesseur: user.isProfesseur, username: uname, totalMark: totalMark, file: file }))
+      }
+      else dispatch(updateChapitre({ idRoom: activeRoom, title: titreChap, contenu: htmlContent, id: currentChapitre._id, isProfesseur: user.isProfesseur, username: uname, totalMark: totalMark, file: file }))
+    }
   }
-  else dispatch(updateChapitre({ idRoom: activeRoom, title: titreChap, contenu: htmlContent , id: currentChapitre._id, isProfesseur: user.isProfesseur , username: uname , totalMark: totalMark ,  file: file }))
-  }
-  }
+
+  const handleFileSelect = (e) => {
+    const selectedFile = e.target.files[0];
+    setFile(selectedFile);
+  };
+
 
   const handleClear = () => {
     setHtmlContent('')
@@ -96,10 +101,10 @@ function EditorCour({ currentChapId, setCurrentChapId, currentChapitre, activeRo
         tabIndex={1} // tabIndex of textarea
         onBlur={(newContent) => setHtmlContent(newContent)} // preferred to use only this option to update the content for performance reasons
       />
-      <div style={{marginTop:"10px"}}>
-        <input type='file' onChange={(e)=> setFile(e.target.files[0])}/>
+      <div style={{ marginTop: '20px' }}>
+        <input type='file' style={{ display: 'none' }} id='fileInput' onChange={handleFileSelect} />
+        <label htmlFor='fileInput' style={{ cursor: 'pointer', backgroundColor: '#4CAF50', color: 'white', padding: '10px 20px', borderRadius: '5px' }}>{file ? file.name : 'Choose File'} </label>
       </div>
-
       <Stack direction="row" spacing={2} sx={{ justifyContent: "space-between", marginTop: 2 }} >
         <Button variant="contained" endIcon={<HighlightOffOutlinedIcon />} color="error" onClick={handleClear}>
           clear
