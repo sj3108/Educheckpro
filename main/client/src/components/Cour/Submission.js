@@ -1,6 +1,6 @@
 import { Avatar, Divider, ListItem, ListItemAvatar, ListItemButton, ListItemText, Menu, MenuItem, Typography } from '@mui/material'
 import React from 'react'
-import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
+import { blue, green, orange, pink, purple, red, yellow } from '@mui/material/colors';
 import moment from 'moment';
 import { useDispatch } from 'react-redux';
 import { delete_comment } from '../../actions/comments';
@@ -8,7 +8,14 @@ import { getUserFromJWT } from '../../utils/User';
 import { useNavigate } from 'react-router-dom';
 import secureLocalStorage from 'react-secure-storage';
 
+const getRandomColor = () => {
+  const colors = [blue[500], green[500], orange[500], pink[500], purple[500], red[500], yellow[500]];
+  const randomIndex = Math.floor(Math.random() * colors.length);
+  return colors[randomIndex];
+};
+
 function Submission({ submission }) {
+  const color = getRandomColor();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const dispatch = useDispatch()
@@ -23,12 +30,10 @@ function Submission({ submission }) {
     setAnchorEl(null);
   };
 
-const toDetail = () => {
-  const currentSubmissions = secureLocalStorage.setItem('CurrentSubmission', submission)
-  navigate(`/active_cour/chaptire/submission/${submission._id}`)
- 
-  console.log("I'M CLICKEDS")
-}
+  const toDetail = () => {
+    const currentSubmissions = secureLocalStorage.setItem('CurrentSubmission', submission)
+    navigate(`/active_cour/chaptire/submission/${submission._id}`)
+  }
 
 
   return (
@@ -36,7 +41,7 @@ const toDetail = () => {
       <ListItem alignItems="flex-start" sx={{ display: "flex", justifyContent: "space-between", flexDirection: "row" }} onClick={toDetail}  >
         <>
           <ListItemAvatar>
-            <Avatar sx={{ color: "#fff", backgroundColor: "#78a" }} >{submission?.owner.firstName.charAt(0).toUpperCase()}</Avatar>
+            <Avatar sx={{ color: "#fff", backgroundColor: color }} >{submission?.owner.firstName.charAt(0).toUpperCase()}</Avatar>
           </ListItemAvatar>
           <ListItemText
             primary={submission?.owner.firstName + " " + submission?.owner.lastName}
@@ -47,27 +52,21 @@ const toDetail = () => {
                   component="span"
                   variant="body2"
                   color="text.primary"
+                  marginLeft={'5px'}
                 >
-                  {moment(submission?.createdAt).format("DD MMM YYYY , h:mm:ss a")}
+                  Subimtted at: {moment(submission?.createdAt).format("DD MMM YYYY , h:mm:ss a")}
                 </Typography>
                 <br />
-                <Typography component="span" style={{ wordBreak: 'break-word' }}>
-                  {
-                    submission?.file
-                  }
-                </Typography>
-
               </>
             }
           />
         </>
-
         {
           user?.isProfesseur && (
-
             <div >
               {/* MARKS OBTAINED HERE */}
-              <>marks obtained/total marks</>
+              <div>Marks Obtained: </div>
+              <div></div>
               {/* <ListItemButton onClick={handleOpenMenu}>
                 <MoreVertOutlinedIcon />
               </ListItemButton> */}
@@ -85,9 +84,6 @@ const toDetail = () => {
         >
           {/* <MenuItem onClick={handleDelete}>Supprimer</MenuItem> */}
         </Menu>
-
-
-
       </ListItem>
       <Divider variant="inset" />
     </>

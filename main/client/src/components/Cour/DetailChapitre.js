@@ -189,8 +189,8 @@ function DetailChapitre() {
                 <>
                     {/* New section visible to teacher only */}
                     <Paper style={{ padding: '20px', margin: '20px', borderRadius: '15px', overflow: 'hidden', height: "500px", position: 'relative' }} elevation={6}>
+                        <ListSubmission submissions={submissions} />
                         <Box sx={{ ...CustomStyles.commentBox }}>
-                            <ListSubmission submissions={submissions} />
                             <div style={{ textAlign: 'center' }}>
                                 <h1> TOTAL SUBMISSION : {submissions?.length}</h1>
                                 <h1>TOTAL STUDENT : {activeRoom.etudiants?.length}</h1>
