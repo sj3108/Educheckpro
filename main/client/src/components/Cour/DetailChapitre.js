@@ -44,7 +44,7 @@ function DetailChapitre() {
         content: () => reportTemplateRef.current,
         documentTitle: `${chapitre?.title}` || "document",
     });
-    // console.log("HHHHHHHH ", submissions.length)
+    //console.log("HHHHHHHH ", submissions)
 
     const handleFileSelect = (e) => {
         const selectedFile = e.target.files[0];
@@ -188,20 +188,20 @@ function DetailChapitre() {
             {user.isProfesseur ? (
                 <>
                     {/* New section visible to teacher only */}
-                    <Paper style={{ padding: '20px', margin: '20px', borderRadius: '15px', overflow: 'hidden', height: "500px", position: 'relative' }} elevation={6}>
+                    <Paper style={{ padding: '20px', margin: '20px', borderRadius: '15px', overflow: 'hidden' }} elevation={6}>
                         <ListSubmission submissions={submissions} />
-                        <Box sx={{ ...CustomStyles.commentBox }}>
-                            <div style={{ textAlign: 'center' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
+                            <div style={{ marginLeft: '80px' }}>
                                 <h1> TOTAL SUBMISSION : {submissions?.length}</h1>
                                 <h1>TOTAL STUDENT : {activeRoom.etudiants?.length}</h1>
                             </div>
-                        </Box>
-                        <div style={{ position: 'absolute', bottom: '20px', right: '20px' }}>
-                            {submissions?.length > 1 && (
-                                <Tooltip title="Check for Plagiarism Among Students">
-                                    <Button variant='contained' onClick={handleInternalPlagarism} sx={{ margin: '20px 100px' }}>Evaluate</Button>
-                                </Tooltip>
-                            )}
+                            <div style={{ display: 'flex', alignItems: 'center', marginRight: '110px' }}>
+                                {submissions?.length > 1 && (
+                                    <Tooltip title="Check for Plagiarism Among Students">
+                                        <Button variant='contained' onClick={handleInternalPlagarism}>Evaluate</Button>
+                                    </Tooltip>
+                                )}
+                            </div>
                         </div>
                     </Paper>
                     {isInternalFlag ? (

@@ -1,4 +1,5 @@
-import { Box, Button, CircularProgress, Divider, Paper, Typography } from '@mui/material'
+import { Button, CircularProgress, Divider, Paper, Typography } from '@mui/material'
+import { Box } from '@mui/system';
 import moment from 'moment'
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -20,46 +21,56 @@ import ListSubmission from './ListSubmission'
 import DetailChapitre from './DetailChapitre'
 import axios from 'axios'
 import './css/Loader.css'
+
 function DetailSubmission() {
     const navigate = useNavigate()
     const { id } = useParams()
     // console.log("IIIIIIID", id)
     const dispatch = useDispatch()
-    const [obtainedMarks, setObtainerMarks] = useState(null)
-    const [obtainedMarksRender, setObtainedMarksRender] = useState(null);
+    const [obtainedMarks, setObtainedMarks] = useState(null)
+    const [submissionData, setSubmissionData] = useState(null);
     const activeRoom = secureLocalStorage.getItem('activeRoom')
     const currentSubmissions = secureLocalStorage.getItem('CurrentSubmission')
 
     const user = getUserFromJWT()
     // const { chapitre, isLoading, comments , submissions } = useSelector(state => state.roomReducers)
-    const { chapitre, isLoading, curr } = useSelector(state => state.roomReducers)
-    console.log("FFFFFFFFFFFFFF", curr)
-    console.log("AAAAAA", currentSubmissions)
+    const { chapitre, isLoading } = useSelector(state => state.roomReducers)
+    // console.log("AAAAAA", currentSubmissions)
     const reportTemplateRef = useRef(null);
     const handlePrint = useReactToPrint({
         content: () => reportTemplateRef.current,
         documentTitle: `${chapitre?.title}` || "document",
-
     });
-    let marks
+
     const handleSend = async () => {
         try {
-            marks = await axios.put(`http://localhost:3000/rooms/updateSubmission/${currentSubmissions._id}`, { ObtainedMarks: obtainedMarks })
-            console.log("GGGGGGGGG", marks.data)
-            //  setObtainedMarksRender(marks.data.ObtainedMarks);
+            await axios.put(`http://localhost:3000/rooms/updateSubmission/${currentSubmissions._id}`, { ObtainedMarks: obtainedMarks })
+            setSubmissionData(obtainedMarks);
+            window.location.reload();
+            //console.log("GGGGGGGGG", marks.data)
         } catch (error) {
             console.log("error", error)
         }
     }
+
+    const fetchSubmissionData = async () => {
+        try {
+            const response = await axios.get(`http://localhost:3000/rooms/getSubmissionById/${currentSubmissions._id}`);
+            setSubmissionData(response.data.submission.ObtainedMarks);
+        } catch (error) {
+            console.log("error", error)
+        }
+    }
+
+
     useEffect(() => {
         if (!user) navigate('/auth')
         dispatch(getChapitreById(currentSubmissions.chapitre))
-        // dispatch(getSubmissionById(currentSubmissions._id))
-        // dispatch(fetchComments(id))
-        // dispatch(fetchSubmission(id))
         dispatch(getRoom(activeRoom._id))
+        fetchSubmissionData();
     }, [id, dispatch])
 
+    //console.log(submissionData);
 
     if (isLoading) {
         return <Paper sx={{
@@ -109,9 +120,7 @@ function DetailSubmission() {
             uri: "http://localhost:3000" + currentSubmissions.file,
             fileType: parts[parts.length - 1].split('.')[1],
             fileName: parts[parts.length - 1]
-
         }
-
     ];
 
 
@@ -125,8 +134,8 @@ function DetailSubmission() {
             fileType: parts1[parts1.length - 1].split('.')[1],
             fileName: parts1[parts1.length - 1]
         }
-
     ];
+
     return (
         <>
             <Paper elevation={6} style={{ padding: '10px', borderRadius: '15px', overflow: 'hidden' }}>
@@ -184,32 +193,37 @@ function DetailSubmission() {
                         <div>
                             <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
                                 <div style={{ margin: '20px 30px' }}>
-                                    Obtained Marks:{(marks?.data.ObtainedMarks) ? (marks?.data.ObtainedMarks) : (" Marks not assigned yet")}
+                                    Obtained Marks:{(submissionData) ? (submissionData) : (" Marks not assigned yet")}
                                 </div>
-                                <div style={{ padding: '20px', textAlign: 'center' }} ref={reportTemplateRef}>
-                                    <input
-                                        type='number'
-                                        onChange={(e) => setObtainerMarks(e.target.value)}
-                                        style={{
-                                            padding: '10px',
-                                            borderRadius: '5px',
-                                            border: '1px solid #ccc',
-                                            marginRight: '10px',
-                                            width: '150px',
-                                            boxSizing: 'border-box'
-                                        }}
-                                    />
-                                    <button
-                                        onClick={handleSend}
-                                        style={{
-                                            padding: '10px 20px',
-                                            borderRadius: '5px',
-                                            backgroundColor: '#007bff',
-                                            color: 'white',
-                                            border: 'none',
-                                            cursor: 'pointer'
-                                        }}>Submit</button>
-                                </div>
+                                {!submissionData ? (
+                                    <>
+                                        <div style={{ display: 'flex', alignItems: 'center', marginRight: '40px', marginBottom: '30px' }} ref={reportTemplateRef}>
+                                            <input
+                                                type='number'
+                                                onChange={(e) => {
+                                                    setObtainedMarks(e.target.value)
+                                                }}
+                                                style={{
+                                                    padding: '10px',
+                                                    borderRadius: '5px',
+                                                    border: '1px solid #ccc',
+                                                    marginRight: '10px',
+                                                    width: '150px',
+                                                    boxSizing: 'border-box'
+                                                }}
+                                            />
+                                            <button
+                                                onClick={handleSend}
+                                                style={{
+                                                    padding: '10px 20px',
+                                                    borderRadius: '5px',
+                                                    backgroundColor: '#007bff',
+                                                    color: 'white',
+                                                    border: 'none',
+                                                    cursor: 'pointer'
+                                                }}>Submit</button>
+                                        </div>
+                                    </>) : (<></>)}
                             </div>
                         </div>
                     </Paper>
@@ -254,7 +268,6 @@ function DetailSubmission() {
                 (
                     <>
                         {/* ASSIGNMENT DETAIL  FOR STUDENT*/}
-
                         {/* SUBMISSION DETAIL FOR STUDENT */}
                         <Paper elevation={6} style={{ padding: '10px', borderRadius: '15px', overflow: 'hidden', marginTop: '15px' }}>
                             <div>

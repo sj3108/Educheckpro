@@ -16,20 +16,18 @@ function App() {
       <BrowserRouter>
         <Navbar />
         <Routes>
-          <Route path='/auth' exact element={ <Auth/>  }/>
-        
-          <Route path='/' element={<Navigate  to="/cours" />} />
+          <Route path='/auth' exact element={<Auth />} />
+          <Route path='/' element={<Navigate to="/cours" />} />
           <Route path="/cours" element={<Rooms />} />
           <Route path="/cours/search" element={<Rooms />} />
           <Route path="/active_cour/chaptire/:id" element={<DetailChapitre />} />
-          <Route path="/active_cour/chaptire/submission/:id"  element={<DetailSubmission/>}/>
+          <Route path="/active_cour/chaptire/submission/:id" element={<DetailSubmission />} />
           <Route path="/statics" element={<Statics />} />
           <Route path="/active_cour" element={<Cour />} />
-          <Route path="/meet" element={<Meeting/>} exact />
+          <Route path="/meet" element={<Meeting />} exact />
           <Route path="*" element={<Navigate to="/cours" />} />
-      
         </Routes>
-        <div style={{marginBottom : 20}}></div>
+        <div style={{ marginBottom: 20 }}></div>
       </BrowserRouter>
     </Container>
   );

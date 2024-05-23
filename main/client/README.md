@@ -1,5 +1,5 @@
 addSubmissionToRoom
 submission.js
 listSubmission.js
-DetailSsubmkission.js
+DetailSubmission.js
 popupDoc.js
