@@ -21,6 +21,8 @@ import ListSubmission from './ListSubmission'
 import DetailChapitre from './DetailChapitre'
 import axios from 'axios'
 import './css/Loader.css'
+import Tooltip from '@mui/material/Tooltip';
+import './styles.css'
 
 function DetailSubmission() {
     const navigate = useNavigate()
@@ -29,6 +31,7 @@ function DetailSubmission() {
     const dispatch = useDispatch()
     const [obtainedMarks, setObtainedMarks] = useState(null)
     const [submissionData, setSubmissionData] = useState(null);
+    const [errorMessage, setErrorMessage] = useState('');
     const activeRoom = secureLocalStorage.getItem('activeRoom')
     const currentSubmissions = secureLocalStorage.getItem('CurrentSubmission')
 
@@ -146,7 +149,7 @@ function DetailSubmission() {
                                 <Typography sx={{ wordBreak: 'break-word', padding: '10px 35px 2px 35px' }} variant="h4" component="h2" fontFamily='Nunito'>{chapitre.title}</Typography>
                                 <Typography variant="body1" sx={{ paddingLeft: '39px' }}>{moment(chapitre?.createdAt).fromNow()}</Typography>
                             </div>
-                            <Button variant='contained' sx={{ maxHeight: 40, margin: '20px 50px' }} startIcon={<FileDownloadIcon />} onClick={handlePrint}> Generer PDF</Button>
+                            <Button variant='contained' sx={{ maxHeight: 40, margin: '20px 50px' }} startIcon={<FileDownloadIcon />} onClick={handlePrint}>Generate PDF</Button>
                         </div>
                         <Divider style={{ margin: '20px 0', borderBottomWidth: '2px', borderColor: '#908B8B', borderRadius: '10px' }} />
                         <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
@@ -200,8 +203,16 @@ function DetailSubmission() {
                                         <div style={{ display: 'flex', alignItems: 'center', marginRight: '40px', marginBottom: '30px' }} ref={reportTemplateRef}>
                                             <input
                                                 type='number'
+                                                placeholder='Enter marks'
                                                 onChange={(e) => {
-                                                    setObtainedMarks(e.target.value)
+                                                    const value = parseInt(e.target.value, 10);
+                                                    if (value > chapitre.TotalMarks) {
+                                                        setErrorMessage(`Marks cannot exceed ${chapitre.TotalMarks}`);
+                                                        setObtainedMarks(null); // Clear the obtained marks if it exceeds the limit
+                                                    } else {
+                                                        setErrorMessage('');
+                                                        setObtainedMarks(value);
+                                                    }
                                                 }}
                                                 style={{
                                                     padding: '10px',
@@ -212,21 +223,39 @@ function DetailSubmission() {
                                                     boxSizing: 'border-box'
                                                 }}
                                             />
-                                            <button
-                                                onClick={handleSend}
-                                                style={{
-                                                    padding: '10px 20px',
-                                                    borderRadius: '5px',
-                                                    backgroundColor: '#007bff',
-                                                    color: 'white',
-                                                    border: 'none',
-                                                    cursor: 'pointer'
-                                                }}>Submit</button>
+                                            {errorMessage ? (
+                                                <Tooltip title={errorMessage} placement="top">
+                                                    <span>
+                                                        <button
+                                                            disabled
+                                                            style={{
+                                                                padding: '10px 20px',
+                                                                borderRadius: '5px',
+                                                                backgroundColor: '#ccc',
+                                                                color: 'white',
+                                                                border: 'none',
+                                                                cursor: 'not-allowed'
+                                                            }}>Submit</button>
+                                                    </span>
+                                                </Tooltip>
+                                            ) : (
+                                                <button
+                                                    onClick={handleSend}
+                                                    disabled={obtainedMarks === null}
+                                                    style={{
+                                                        padding: '10px 20px',
+                                                        borderRadius: '5px',
+                                                        backgroundColor: '#007bff',
+                                                        color: 'white',
+                                                        border: 'none',
+                                                        cursor: 'pointer'
+                                                    }}>Submit</button>
+                                            )}
                                         </div>
                                     </>) : (<></>)}
                             </div>
                         </div>
-                    </Paper>
+                    </Paper >
                     <Paper elevation={6} style={{ padding: '10px', borderRadius: '15px', overflow: 'hidden', marginTop: '20px' }}>
                         <div>
                             {/* {currentSubmissions.ExternalPlagrism[0]?

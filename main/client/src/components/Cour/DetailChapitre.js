@@ -34,9 +34,11 @@ function DetailChapitre() {
     const user = getUserFromJWT()
     const { chapitre, isLoading, comments, submissions } = useSelector(state => state.roomReducers)
     const reportTemplateRef = useRef(null);
+    const tableRef = useRef(null);
     const [file, setFile] = useState()
     const [isInternalFlag, setisInternalFlag] = React.useState(false)
-    const [internalPlagRes, setinternalPlagRes] = useState()
+    const [internalPlagRes, setinternalPlagRes] = useState();
+    const [minHeight, setMinHeight] = useState(0);
 
 
 
@@ -58,7 +60,11 @@ function DetailChapitre() {
         dispatch(fetchComments(id))
         dispatch(fetchSubmission(id))
         dispatch(getRoom(activeRoom._id))
-    }, [id, dispatch])
+        if (tableRef.current) {
+            const tableHeight = tableRef.current.offsetHeight;
+            setMinHeight(tableHeight + 50); // Adding some padding
+        }
+    }, [id, dispatch, internalPlagRes])
 
 
     if (isLoading) {
@@ -188,42 +194,44 @@ function DetailChapitre() {
             {user.isProfesseur ? (
                 <>
                     {/* New section visible to teacher only */}
-                    <Paper style={{ padding: '20px', margin: '20px', borderRadius: '15px', overflow: 'hidden' }} elevation={6}>
-                        <ListSubmission submissions={submissions} />
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
-                            <div style={{ marginLeft: '80px' }}>
-                                <h1> TOTAL SUBMISSION : {submissions?.length}</h1>
-                                <h1>TOTAL STUDENT : {activeRoom.etudiants?.length}</h1>
+                    {chapitre.TotalMarks ? (<>
+                        <Paper style={{ padding: '20px', margin: '20px', borderRadius: '15px', overflow: 'hidden' }} elevation={6}>
+                            <ListSubmission submissions={submissions} />
+                            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
+                                <div style={{ marginLeft: '80px' }}>
+                                    <h1> TOTAL SUBMISSION : {submissions?.length}</h1>
+                                    <h1>TOTAL STUDENT : {activeRoom.etudiants?.length}</h1>
+                                </div>
+                                <div style={{ display: 'flex', alignItems: 'center', marginRight: '110px' }}>
+                                    {submissions?.length > 1 && (
+                                        <Tooltip title="Check for Plagiarism Among Students">
+                                            <Button variant='contained' onClick={handleInternalPlagarism}>Evaluate</Button>
+                                        </Tooltip>
+                                    )}
+                                </div>
                             </div>
-                            <div style={{ display: 'flex', alignItems: 'center', marginRight: '110px' }}>
-                                {submissions?.length > 1 && (
-                                    <Tooltip title="Check for Plagiarism Among Students">
-                                        <Button variant='contained' onClick={handleInternalPlagarism}>Evaluate</Button>
-                                    </Tooltip>
-                                )}
-                            </div>
-                        </div>
-                    </Paper>
+                        </Paper>
+                    </>) : (<></>)}
                     {isInternalFlag ? (
                         <>
-                            <Paper style={{ padding: '20px', margin: '20px', borderRadius: '15px', overflow: 'hidden', minHeight: '500px' }} elevation={6}>
-                                <h2 style={{ marginLeft: '20px' }}>Classroom Plagiarism Analysis :</h2>
+                            <Paper style={{ padding: '20px', margin: '20px', borderRadius: '15px', overflow: 'hidden', minHeight: `${minHeight}px`, boxShadow: '0 4px 8px rgba(0.2, 0.2, 0.2, 0.5)' }} elevation={6}>
+                                <h2 style={{ marginLeft: '20px', color: '#333', fontSize: '24px', marginBottom: '15px' }}>Classroom Plagiarism Analysis :</h2>
                                 <div style={{ overflowX: 'auto' }}>
-                                    <table style={{ width: '100%', tableLayout: 'fixed' }} border="1">
-                                        <thead>
+                                    <table style={{ width: '100%', tableLayout: 'fixed', borderCollapse: 'collapse', border: '3px solid #ddd', borderRadius: '10px' }}>
+                                        <thead style={{ backgroundColor: '#f2f2f2', borderBottom: '2px solid #ddd' }}>
                                             <tr>
-                                                <th></th> {/* Empty header for the top-left cell */}
+                                                <th style={{ padding: '10px', textAlign: 'center', borderTopLeftRadius: '10px' }}></th> {/* Empty header for the top-left cell */}
                                                 {internalPlagRes.studentName.map((name, index) => (
-                                                    <th key={index}>{name}</th>
+                                                    <th key={index} style={{ padding: '10px', textAlign: 'center', borderBottom: '2px solid #ddd' }}>{name}</th>
                                                 ))}
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {internalPlagRes.matrix.map((row, rowIndex) => (
                                                 <tr key={rowIndex}>
-                                                    <td style={{ textAlign: 'center' }}>{internalPlagRes.studentName[rowIndex]}</td> {/* Row name */}
+                                                    <td style={{ padding: '10px', textAlign: 'center', borderRight: '2px solid #ddd' }}>{internalPlagRes.studentName[rowIndex]}</td> {/* Row name */}
                                                     {row.map((cell, cellIndex) => (
-                                                        <td style={{ textAlign: 'center' }} key={cellIndex}>{cell}</td>
+                                                        <td style={{ padding: '10px', textAlign: 'center', borderBottom: '1px solid #ddd' }} key={cellIndex}>{cell}</td>
                                                     ))}
                                                 </tr>
                                             ))}
@@ -231,6 +239,7 @@ function DetailChapitre() {
                                     </table>
                                 </div>
                             </Paper>
+
                         </>
                     ) : (<>
                     </>)
@@ -254,15 +263,17 @@ function DetailChapitre() {
                         </>
                     ) : (
                         <>
-                            <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', margin: '40px' }}>
-                                <input type='file' style={{ display: 'none' }} id='fileInput' onChange={handleFileSelect} />
-                                <label htmlFor='fileInput' style={{ fontStyle: 'italic', marginRight: '7px' }}>
-                                    {file ? file.name : ''}
-                                </label>
-                                <button onClick={file ? handleSend : () => document.getElementById('fileInput').click()} style={{ backgroundColor: '#008CBA', color: 'white', padding: '10px 15px', borderRadius: '5px', border: 'none', cursor: 'pointer', fontSize: '16px' }}>
-                                    {file ? 'Submit' : 'Select File'}
-                                </button>
-                            </div>
+                            {chapitre.TotalMarks ? (
+                                <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', margin: '40px' }}>
+                                    <input type='file' style={{ display: 'none' }} id='fileInput' onChange={handleFileSelect} />
+                                    <label htmlFor='fileInput' style={{ fontStyle: 'italic', marginRight: '7px' }}>
+                                        {file ? file.name : ''}
+                                    </label>
+                                    <button onClick={file ? handleSend : () => document.getElementById('fileInput').click()} style={{ backgroundColor: '#008CBA', color: 'white', padding: '10px 15px', borderRadius: '5px', border: 'none', cursor: 'pointer', fontSize: '16px' }}>
+                                        {file ? 'Submit' : 'Select File'}
+                                    </button>
+                                </div>
+                            ) : (<></>)}
                         </>
                     )
                     }

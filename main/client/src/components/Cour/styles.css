@@ -1,9 +1,21 @@
 #actionPopover {
-
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 50px;
-    padding-inline: 50px;
-    padding-bottom: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  padding-inline: 50px;
+  padding-bottom: 20px;
 }
 
+/*Below code is only for DetailSubmission.js input box for marks*/
+/* Disable number incrementer buttons */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Reset appearance for Firefox */
+input[type="number"] {
+  /*  -moz-appearance: textfield;  this line was showing compatibility warning */
+  appearance: textfield;
+}
