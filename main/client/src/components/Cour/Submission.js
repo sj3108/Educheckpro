@@ -38,7 +38,7 @@ function Submission({ submission }) {
   const fetchSubmissionData = async () => {
     try {
       const response = await axios.get(`http://localhost:3000/rooms/getSubmissionById/${submission._id}`);
-      console.log(response.data.submission.ObtainedMarks);
+      //console.log(response.data.submission.ObtainedMarks);
       setSubmissionData(response.data.submission.ObtainedMarks);
       //console.log(submissionsArray);
     } catch (error) {

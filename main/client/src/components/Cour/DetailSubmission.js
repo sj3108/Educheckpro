@@ -38,18 +38,19 @@ function DetailSubmission() {
     const user = getUserFromJWT()
     // const { chapitre, isLoading, comments , submissions } = useSelector(state => state.roomReducers)
     const { chapitre, isLoading } = useSelector(state => state.roomReducers)
-    // console.log("AAAAAA", currentSubmissions)
     const reportTemplateRef = useRef(null);
+
+    // console.log("AAAAAA", chapitre.title)
     const handlePrint = useReactToPrint({
-        content: () => reportTemplateRef.current,
         documentTitle: `${chapitre?.title}` || "document",
+        content: () => reportTemplateRef.current,
     });
 
     const handleSend = async () => {
         try {
             await axios.put(`http://localhost:3000/rooms/updateSubmission/${currentSubmissions._id}`, { ObtainedMarks: obtainedMarks })
             setSubmissionData(obtainedMarks);
-            window.location.reload();
+            //window.location.reload();
             //console.log("GGGGGGGGG", marks.data)
         } catch (error) {
             console.log("error", error)
@@ -152,15 +153,17 @@ function DetailSubmission() {
                             <Button variant='contained' sx={{ maxHeight: 40, margin: '20px 50px' }} startIcon={<FileDownloadIcon />} onClick={handlePrint}>Generate PDF</Button>
                         </div>
                         <Divider style={{ margin: '20px 0', borderBottomWidth: '2px', borderColor: '#908B8B', borderRadius: '10px' }} />
-                        <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-                            <div style={{ wordBreak: 'break-word', padding: 20 }} ref={reportTemplateRef}>{parse(chapitre.contenu)}</div>
-                            {chapitre.TotalMarks ? (
-                                <>
-                                    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", margin: '10px 35px', padding: '10px 25px', width: '500px' }}>
-                                        <div style={{ wordBreak: 'break-word' }} ref={reportTemplateRef} variant="h4" >TOTAL MARKS : {chapitre.TotalMarks}</div>
-                                    </div>
-                                </>
-                            ) : (<></>)}
+                        <div ref={reportTemplateRef}>
+                            <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+                                <div style={{ wordBreak: 'break-word', padding: 20 }}>{parse(chapitre.contenu)}</div>
+                                {chapitre.TotalMarks ? (
+                                    <>
+                                        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", margin: '10px 35px', padding: '10px 25px', width: '500px' }}>
+                                            <div style={{ wordBreak: 'break-word' }} variant="h4" >TOTAL MARKS : {chapitre.TotalMarks}</div>
+                                        </div>
+                                    </>
+                                ) : (<></>)}
+                            </div>
                         </div>
                         {/* this is pdf component */}
                         <Button variant="contained" style={{ backgroundColor: 'rgba(0, 180, 0, 0.8)', color: 'white' }} sx={{ margin: '5px 15px' }}>
@@ -182,7 +185,6 @@ function DetailSubmission() {
                                         <Typography sx={{ wordBreak: 'break-word', padding: '10px 35px 2px 20px' }} variant="h6" fontFamily='Nunito' >Student Name : {currentSubmissions.owner.firstName + " " + currentSubmissions.owner.lastName} </Typography>
                                         <Typography variant="body1" sx={{ paddingLeft: '22px' }}>{moment(chapitre?.createdAt).fromNow()}</Typography>
                                     </div>
-                                    <Button variant='contained' sx={{ maxHeight: 40, margin: '20px 50px' }} startIcon={<FileDownloadIcon />} onClick={handlePrint}>Generate PDF</Button>
                                 </div>
                                 <Divider style={{ margin: '20px 0', borderBottomWidth: '2px', borderColor: '#908B8B', borderRadius: '10px' }} />
                                 {/* <div style={{ wordBreak: 'break-word',padding:20 }} variant="h6" fontFamily='Nunito' >{}</div> */}
@@ -196,11 +198,11 @@ function DetailSubmission() {
                         <div>
                             <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
                                 <div style={{ margin: '20px 30px' }}>
-                                    Obtained Marks:{(submissionData) ? (submissionData) : (" Marks not assigned yet")}
+                                    Obtained Marks: {(submissionData) ? (submissionData) : (" Marks not assigned yet")}
                                 </div>
                                 {!submissionData ? (
                                     <>
-                                        <div style={{ display: 'flex', alignItems: 'center', marginRight: '40px', marginBottom: '30px' }} ref={reportTemplateRef}>
+                                        <div style={{ display: 'flex', alignItems: 'center', marginRight: '40px', marginBottom: '30px' }}>
                                             <input
                                                 type='number'
                                                 placeholder='Enter marks'
