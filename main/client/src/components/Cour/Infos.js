@@ -18,12 +18,18 @@ export default function Infos() {
           Title : <span style={{ fontFamily: 'Nunito', fontSize: '17px' }}>{title}</span>
         </Typography>
         <Typography variant="h6" sx={{ fontFamily: "Nunito" }}  >
-          Tags : <span style={{ fontFamily: 'Nunito', fontSize: '17px' }}>{tags.map((tag) => `#${tag} `)}</span>
+          Tags : {tags && tags.length > 0 ? (
+            <span style={{ fontFamily: 'Nunito', fontSize: '17px' }}>
+              {tags.map((tag, index) => (
+                <React.Fragment key={index}>
+                  #{tag}{' '}
+                </React.Fragment>
+              ))}
+            </span>
+          ) : (
+            <span>No tags</span>
+          )}
         </Typography>
-        {/* <Typography variant="h6" sx={{  fontFamily : "Nunito" }} >
-         Nombre des chapitres :<span style ={{fontFamily:'Nunito' , fontSize: '17px'}}>{numbOfChapters}</span>
-          <br />
-        </Typography> */}
       </CardContent>
     </Card>
   );
