@@ -17,6 +17,7 @@ import { getUserFromJWT } from '../../utils/User'
 import axios from "axios";
 import FormData from 'form-data';
 import Tooltip from '@mui/material/Tooltip';
+import './print.css'
 
 import PopupDoc from './PopupDoc'
 import { addSubmissionToRoom, getRoom } from '../../actions/rooms'
@@ -44,7 +45,7 @@ function DetailChapitre() {
 
     const handlePrint = useReactToPrint({
         content: () => reportTemplateRef.current,
-        documentTitle: `${chapitre?.title}` || "document",
+        // documentTitle: `${chapitre?.title}` || "document",
     });
     //console.log("HHHHHHHH ", submissions)
 
@@ -162,35 +163,35 @@ function DetailChapitre() {
     return (
         <>
             <Paper elevation={6} style={{ padding: '10px', borderRadius: '15px', overflow: 'hidden' }}>
-                <div>
-                    <div style={{ borderRadius: '20px', margin: '5px', flex: 1 }} >
-                        <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-                            <div>
-                                <Typography sx={{ wordBreak: 'break-word', padding: '10px 35px 2px 35px' }} variant="h4" component="h2" fontFamily='Nunito'>{chapitre.title}</Typography>
-                                <Typography variant="body1" sx={{ paddingLeft: '39px' }}> {moment(chapitre?.createdAt).fromNow()}</Typography>
-                            </div>
-                            <Button variant='contained' sx={{ maxHeight: 40, margin: '20px 50px' }} startIcon={<FileDownloadIcon />} onClick={handlePrint}>Generate PDF</Button>
+                {/* <div> */}
+                <div style={{ borderRadius: '20px', margin: '5px', flex: 1 }} ref={reportTemplateRef} >
+                    <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+                        <div>
+                            <Typography sx={{ wordBreak: 'break-word', padding: '10px 35px 2px 35px' }} variant="h4" component="h2" fontFamily='Nunito'>{chapitre.title}</Typography>
+                            <Typography variant="body1" className='no-print' sx={{ paddingLeft: '39px' }}> {moment(chapitre?.createdAt).fromNow()}</Typography>
                         </div>
-                        <Divider style={{ margin: '20px 0', borderBottomWidth: '2px', borderColor: '#908B8B', borderRadius: '10px' }} />
-                        <div ref={reportTemplateRef}>
-                            <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-                                <div style={{ wordBreak: 'break-word', padding: 20 }}>{parse(chapitre.contenu)}</div>
-                                {chapitre.TotalMarks ? (
-                                    <>
-                                        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", margin: '10px 35px', padding: '10px 25px', width: '500px' }}>
-                                            <div style={{ wordBreak: 'break-word' }} variant="h4" >TOTAL MARKS : {chapitre.TotalMarks}</div>
-                                        </div>
-                                    </>
-                                ) : (<></>)}
-                            </div>
-                        </div>
-                        {/* this is pdf component */}
-                        <Button variant="contained" style={{ backgroundColor: 'rgba(0, 180, 0, 0.8)', color: 'white' }} sx={{ margin: '5px 15px' }}>
-                            <PopupDoc uri={fileDetail} />
-                        </Button>
-                        {/* ========== */}
+                        <Button variant='contained' sx={{ maxHeight: 40, margin: '20px 50px' }} className='no-print' startIcon={<FileDownloadIcon />} onClick={handlePrint}>Generate PDF</Button>
                     </div>
+                    <Divider style={{ margin: '20px 0', borderBottomWidth: '2px', borderColor: '#908B8B', borderRadius: '10px' }} />
+                    {/* <div ref={reportTemplateRef}> */}
+                    <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+                        <div style={{ wordBreak: 'break-word', padding: 20 }}>{parse(chapitre.contenu)}</div>
+                        {chapitre.TotalMarks ? (
+                            <>
+                                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", margin: '10px 35px', padding: '10px 25px', width: '500px' }}>
+                                    <div style={{ wordBreak: 'break-word' }} variant="h4" >TOTAL MARKS : {chapitre.TotalMarks}</div>
+                                </div>
+                            </>
+                        ) : (<></>)}
+                    </div>
+                    {/* </div> */}
+                    {/* this is pdf component */}
+                    <Button variant="contained" style={{ backgroundColor: 'rgba(0, 180, 0, 0.8)', color: 'white' }} className='no-print' sx={{ margin: '5px 15px' }}>
+                        <PopupDoc uri={fileDetail} />
+                    </Button>
+                    {/* ========== */}
                 </div>
+                {/* </div> */}
             </Paper>
             {/* TO SUBMIT ASSIGNMENT */}
             {user.isProfesseur ? (
