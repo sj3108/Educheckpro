@@ -1,188 +1,117 @@
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
+import Paper from '@mui/material/Paper';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { FormControl, FormLabel, Paper, Radio, RadioGroup } from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { signin, signup } from '../../actions/auth';
 import { getUserFromJWT } from '../../utils/User';
 import Swal from 'sweetalert2';
-
-function Copyright(props) {
-    return (
-        <Typography variant="body2" color="text.secondary" align="center" {...props} sx={{ fontFamily: "Poppins" }}>
-            {'Copyright © '}
-            <Link color="inherit" href="" style={{ textDecoration: 'none' }} >
-                Educheck Pro
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
+import AuthForm from './AuthForm';
+import yourLogo from './authImage.jpg';
+import projectLogo from '../../images/logo.png';
 
 const theme = createTheme();
 
-export default function Auth() {
+const Auth = () => {
     const [isSignUp, setIsSignUp] = React.useState(false);
-    const navigate = useNavigate()
-    const dispatch = useDispatch()
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
     const initialState = { firstName: '', lastName: '', email: '', password: '', role: '' };
-    const [formData, setFormData] = React.useState(initialState)
-    const user = getUserFromJWT()
+    const [formData, setFormData] = React.useState(initialState);
+    const user = getUserFromJWT();
+
     const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
 
-        setFormData({ ...formData, [e.target.name]: e.target.value })
-
-    }
     const handleSubmit = (event) => {
         event.preventDefault();
         if (!formData.email || !formData.password) {
             Swal.fire({
                 icon: 'warning',
                 title: 'Oops...',
-                text: 'Please complete all fields !',
-            })
-        }
-        else {
-
+                text: 'Please complete all fields!',
+            });
+        } else {
             if (isSignUp) {
                 if (!formData.firstName || !formData.lastName || !formData.role) {
                     Swal.fire({
                         icon: 'warning',
                         title: 'Oops...',
-                        text: 'Please complete all fields !',
-                    })
-                }
-                else
-                    dispatch(signup(formData, navigate))
-            }
-            else {
-                dispatch(signin(formData, navigate))
+                        text: 'Please complete all fields!',
+                    });
+                } else dispatch(signup(formData, navigate));
+            } else {
+                dispatch(signin(formData, navigate));
             }
         }
-
     };
 
     const switchMode = () => {
-        setIsSignUp(!isSignUp)
+        setIsSignUp(!isSignUp);
+    };
 
-    }
     React.useEffect(() => {
-        if (user) navigate('/')
-    }, [])
+        if (user) navigate('/');
+    }, []);
 
     return (
         <ThemeProvider theme={theme}>
-            <Container component="main" maxWidth="sm" sx={{ mt: 2 }} >
-                <Paper elevation={12} sx={{ padding: 4, pb: 5, borderRadius: 5 }}>
-                    <CssBaseline />
+            <CssBaseline />
+            <Grid container sx={{ height: '100vh' }}>
+                <Grid item xs={6} sx={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: '#f5f5f5',
+                    position: 'fixed',
+                    overflow: 'hidden',
+                    top: 0,
+                    bottom: 0,
+                    left: 0,
+                    right: '50%',
+                    height: '100vh', // Ensure it takes full height of the viewport
+                    backgroundImage: `url(${yourLogo})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                }}>
                     <Box
                         sx={{
-                            marginTop: 5,
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            backdropFilter: 'blur(2px)',
+                            backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                            zIndex: 0
+                        }}
+                    />
+                    <Box
+                        sx={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
+                            zIndex: 1
                         }}
                     >
-                        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }} className='gradient-custom-2'>
-                            <LockOutlinedIcon />
-                        </Avatar>
-                        <Typography component="h1" variant="h5" sx={{ fontFamily: "Special Elite" }}>
-                            {isSignUp ? 'Sign Up' : 'Sign In'}
-                        </Typography>
-                        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-                            <Grid container spacing={2}>
-                                {
-                                    isSignUp && (
-                                        <>
-                                            <Grid item xs={12} sm={6}>
-                                                <TextField
-                                                    autoComplete="given-name" name="firstName"
-                                                    required={true} fullWidth id="firstName" label="First Name" autoFocus
-                                                    onChange={handleChange}
-                                                />
-                                            </Grid>
-                                            <Grid item xs={12} sm={6}>
-                                                <TextField
-                                                    required fullWidth id="lastName" label="Last Name" name="lastName" autoComplete="family-name"
-                                                    onChange={handleChange}
-                                                />
-                                            </Grid>
-                                        </>
-                                    )
-                                }
-                                <Grid item xs={12}>
-                                    <TextField
-                                        required
-                                        fullWidth
-                                        id="email"
-                                        label="Email Address"
-                                        name="email"
-                                        autoComplete="email" onChange={handleChange}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        required
-                                        fullWidth
-                                        name="password"
-                                        label="Password"
-                                        type="password"
-                                        id="password"
-                                        autoComplete="new-password" onChange={handleChange}
-                                    />
-                                </Grid>
-                                {
-                                    isSignUp && (
-
-                                        <Grid item xs={12}>
-                                            <FormControl>
-                                                <FormLabel id="role-radio-buttons-group-label" required={true}>Sign as </FormLabel>
-                                                <RadioGroup
-                                                    row
-                                                    aria-labelledby="role-radio-buttons-group-label"
-                                                    name="role"
-                                                    onChange={handleChange}
-                                                >
-                                                    <FormControlLabel value="professeur" control={<Radio />} label="Professor" />
-                                                    <FormControlLabel value="etudiant" control={<Radio />} label="Student" />
-
-                                                </RadioGroup>
-                                            </FormControl>
-                                        </Grid>
-                                    )
-                                }
-                            </Grid>
-                            <Button
-                                type="submit"
-                                fullWidth
-                                className='gradient-custom'
-                                sx={{ mt: 2, mb: 2, color: "white" }}
-                            >
-                                {isSignUp ? 'Sign Up' : 'Sign In'}
-                            </Button>
-                            <Grid container justifyContent="flex-end">
-                                <Grid item>
-                                    <Button variant='outlined' onClick={switchMode} sx={{ fontFamily: "Montserrat", mb: 2 }} >
-                                        {isSignUp ? 'Already have An Account? Sign In' : "Don't have An Account? Sign Up"}
-                                    </Button>
-                                </Grid>
-                            </Grid>
-                        </Box>
+                        <img src={projectLogo} alt="Project Logo" style={{ width: '780px', height: '320px' }} />
                     </Box>
-                    <Copyright sx={{ mt: 5 }} />
-                </Paper>
-            </Container>
+                </Grid>
+                <Grid item xs={6} sx={{ marginLeft: '50%' }}>
+                    {/* Right side */}
+                    <Box p={4} mt={6}>
+                        <Paper elevation={12} sx={{ padding: 4, pb: 5, borderRadius: 5 }}>
+                            <AuthForm isSignUp={isSignUp} handleSubmit={handleSubmit} handleChange={handleChange} switchMode={switchMode} />
+                        </Paper>
+                    </Box>
+                </Grid>
+            </Grid>
         </ThemeProvider>
     );
-}
+};
+
+export default Auth;
