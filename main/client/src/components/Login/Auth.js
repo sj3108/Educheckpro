@@ -98,7 +98,7 @@ const Auth = () => {
                             zIndex: 1
                         }}
                     >
-                        <img src={projectLogo} alt="Project Logo" style={{ width: '780px', height: '320px' }} />
+                        <img src={projectLogo} alt="Project Logo" style={{ width: '780px', height: '290px' }} />
                     </Box>
                 </Grid>
                 <Grid item xs={6} sx={{ marginLeft: '50%' }}>
